@@ -1,0 +1,35 @@
+port: 8080
+spring:
+  jpa:
+    show-sql: true
+    #    format_sql: true
+
+    hibernate:
+      ddl-auto: update
+#      ddl-auto: create
+      #      ddl-auto: none
+      #      ddl-auto: create-drop
+#      dialect: org.hibernate.dialect.PostgreSQLDialect
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: true
+  #    properties:
+  #      hibernate.jdbc.batch_size: 20
+  #      hibernate.cache.use_query_cache: false
+  #      hibernate.cache.use_second_level_cache: false
+  #      hibernate.cache.use_structured_entries: false
+  #      hibernate.cache.use_minimal_puts: false
+  datasource:
+    #SPRING_DATASOURCE_URL environment variable will be something like -> jdbc:sqlserver://MySqlServer\\MyInstance:1433;DatabaseName=MyDbName;
+#    url: jdbc:postgresql://localhost:5432/prod
+    url: jdbc:mysql://localhost:3306/shopProducts
+    #    url: jdbc:postgresql://localhost:5432/productsT
+#    username: postgres
+    username: root
+    password: 0510208486q
+
+#  sql:
+#    init:
+#      #      mode: embedded
+#      mode: always
+#      schema-locations: classpath:data.sql
+
