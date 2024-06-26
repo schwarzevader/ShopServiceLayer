@@ -20,7 +20,6 @@ spring:
     url: jdbc:mysql://localhost:3306/shopProducts
     username: root
     password: 0510208486q
-
 #  sql:
 #    init:
 #      #      mode: embedded
