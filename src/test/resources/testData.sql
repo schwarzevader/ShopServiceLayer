@@ -53,7 +53,6 @@ CREATE TABLE  if not exists product_spec_value
         FOREIGN KEY (specValueParent_id) REFERENCES product_spec_value (product_spec_value_id)
 );
 
-
 CREATE TABLE if not exists products
 (
     product_id          bigint NOT NULL,
