@@ -84,6 +84,20 @@ public class ProductSpecsValue implements Serializable {
     private List<ProductSpecsValue> children = new ArrayList<>();
 
 
+    public void addChildren(ProductSpecsValue children){
+        this.children.add(children);
+    }
+
+    public void removeChildren(ProductSpecsValue children){
+        this.children.remove(children);
+    }
+
+
+    public void removeParent(){
+        this.specValueParent=null;
+    }
+
+
 
 
 
