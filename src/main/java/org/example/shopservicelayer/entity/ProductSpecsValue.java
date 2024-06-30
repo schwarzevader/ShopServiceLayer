@@ -22,6 +22,18 @@ import java.util.Objects;
 @Table(name = "product_spec_value")
 @NamedEntityGraph(
         name = "ProductSpecsValue")
+//@SqlResultSetMapping(
+//        name = "SpecValueParentMapping",
+//        classes = @ConstructorResult(
+//                targetClass = SpecValueParent.class,
+//                columns = {
+//                        @ColumnResult(name = "id", type = Long.class),
+//                        @ColumnResult(name = "value", type = String.class),
+//                        @ColumnResult(name = "children", type = List.class),
+//                        @ColumnResult(name = "parentId", type = Long.class)
+//                }
+//        )
+//)
 //@Table(schema = "public" ,name = "product_spec_value")
 public class ProductSpecsValue implements Serializable {
 
@@ -31,8 +43,9 @@ public class ProductSpecsValue implements Serializable {
     @Column(name = "product_spec_value_id")
     private Long valueId;
 
-
-
+    public ProductSpecsValue(List<ProductSpecsValue> children, long l, String s, Long aLong) {
+        this.children = children;
+    }
 
 
 //    @Id
@@ -72,7 +85,7 @@ public class ProductSpecsValue implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "specValueParent_id")
+    @JoinColumn(name = "spec_value_parent_id")
     private ProductSpecsValue specValueParent;
 
 
