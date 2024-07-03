@@ -85,18 +85,7 @@ public class ProductSpecsValue implements Serializable {
 
 
 
-///////////////////////////////////////// ManyToMany
 
-//    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
-//    @Fetch(FetchMode.SUBSELECT)
-//    private Set<ProductSpecsValue> followers = new HashSet<>();
-//
-//    @JoinTable(name = "product_spec_value_relation",
-//            joinColumns = {@JoinColumn(name = "product_spec_value_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "product_spec_value_relation_id")})
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @Fetch(FetchMode.SUBSELECT)
-//    private Set<ProductSpecsValue> following = new HashSet<>();
 
 //////////////////////////////////////////// OneToMany alternative
 
@@ -134,65 +123,22 @@ public class ProductSpecsValue implements Serializable {
 //        this.specValueParent=null;
 //    }
 
-
-
-
-
-    //    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
-//    @Fetch(FetchMode.SUBSELECT)
-//    private Set<User> followers = new HashSet<>();
+//    public ProductSpecsValue addProductSpecItem(ProductSpecItem productSpecItem) {
+//        productSpecItemList.add(productSpecItem);
+//        productSpecItem.setProductSpecsValue(this);
+//        return this;
+//    }
 //
-//    @JoinTable(name = "user_relation",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "user_relation_id")})
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @Fetch(FetchMode.SUBSELECT)
-//    private Set<User> following = new HashSet<>();
-
-//    private Set <ProductSpecsValue> productSpecsValuesSet;
-
-
-/////////////////////////
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "parent_id")
-//    private PostComment parent;
-//⠀
-//    @OneToMany(
-//            mappedBy = "parent",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private List<PostComment> children = new ArrayList<>();
+//
+//    public ProductSpecsValue removeProductSpecItem(ProductSpecItem productSpecItem) {
+//        productSpecItemList.remove(productSpecItem);
+//        productSpecItem.setProductSpecsValue(null);
+//        return this;
+//    }
+///////////////////////////////////////////////////
 
 
 
-
-//    List<PostCommentRecord>  postComments = entityManager.createQuery("""
-//    WITH postCommentChildHierarchy AS (
-//      SELECT pc.children pc
-//      FROM PostComment pc
-//      WHERE pc.id = :commentId
-//⠀
-//      UNION ALL
-//⠀
-//      SELECT pc.children pc
-//      FROM PostComment pc
-//      JOIN postCommentChildHierarchy pch ON pc = pch.pc
-//      ORDER BY pc.id
-//    )
-//    SELECT new PostCommentRecord(
-//        pch.pc.id,
-//        pch.pc.createdOn,
-//        pch.pc.review,
-//        pch.pc.score,
-//        pch.pc.parent.id
-//    )
-//    FROM postCommentChildHierarchy pch
-//    """, PostCommentRecord.class)
-//            .setParameter("commentId", 1L)
-//            .getResultList();
-
-    ////////////////////////////////////////
 
     @Override
     public String toString() {
@@ -204,9 +150,6 @@ public class ProductSpecsValue implements Serializable {
 
 
 
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private ProductCategory productCategory;
 
     @Override
     public boolean equals(Object o) {
@@ -227,16 +170,5 @@ public class ProductSpecsValue implements Serializable {
 
 
 
-    public ProductSpecsValue addProductSpecItem(ProductSpecItem productSpecItem) {
-        productSpecItemList.add(productSpecItem);
-        productSpecItem.setProductSpecsValue(this);
-        return this;
-    }
 
-
-    public ProductSpecsValue removeProductSpecItem(ProductSpecItem productSpecItem) {
-        productSpecItemList.remove(productSpecItem);
-        productSpecItem.setProductSpecsValue(null);
-        return this;
-    }
 }
