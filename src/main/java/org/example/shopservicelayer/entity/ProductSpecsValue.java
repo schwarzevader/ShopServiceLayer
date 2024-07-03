@@ -74,17 +74,7 @@ public class ProductSpecsValue implements Serializable {
     private List<ProductSpecItem> productSpecItemList = new ArrayList<>();
 
 
-//    @OneToMany(	mappedBy = "parent",
-//            fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    public List<ProductSpecsValue> parents = new ArrayList<>();
 
-//    @OneToMany(	mappedBy = "childrens",
-//            fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    public List<ProductSpecsValue> childrens = new ArrayList<>();
 
 //    @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -92,6 +82,7 @@ public class ProductSpecsValue implements Serializable {
 //    @JoinColumn(name = "spec_name",
 //            referencedColumnName = "spec_name")
     private ProductSpecName productSpecName;
+
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
     @Fetch(FetchMode.SUBSELECT)
@@ -106,84 +97,34 @@ public class ProductSpecsValue implements Serializable {
 
 
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "spec_value_parent_id")
-//    private ProductSpecsValue specValueParent;
-//    @OneToMany(
-//            mappedBy = "specValueParent",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private List<ProductSpecsValue> children = new ArrayList<>();
-//    public void addChildren(ProductSpecsValue children){
-//        this.children.add(children);
-//    }
-//    public void removeChildren(ProductSpecsValue children){
-//        this.children.remove(children);
-//    }
-//    public void removeParent(){
-//        this.specValueParent=null;
-//    }
-
-
-
-
-
-    //    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
-//    @Fetch(FetchMode.SUBSELECT)
-//    private Set<User> followers = new HashSet<>();
-//
-//    @JoinTable(name = "user_relation",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "user_relation_id")})
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @Fetch(FetchMode.SUBSELECT)
-//    private Set<User> following = new HashSet<>();
-
-//    private Set <ProductSpecsValue> productSpecsValuesSet;
-
-
-/////////////////////////
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "parent_id")
-//    private PostComment parent;
-//⠀
-//    @OneToMany(
-//            mappedBy = "parent",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private List<PostComment> children = new ArrayList<>();
-
-
-
-
-//    List<PostCommentRecord>  postComments = entityManager.createQuery("""
-//    WITH postCommentChildHierarchy AS (
-//      SELECT pc.children pc
-//      FROM PostComment pc
-//      WHERE pc.id = :commentId
-//⠀
-//      UNION ALL
-//⠀
-//      SELECT pc.children pc
-//      FROM PostComment pc
-//      JOIN postCommentChildHierarchy pch ON pc = pch.pc
-//      ORDER BY pc.id
-//    )
-//    SELECT new PostCommentRecord(
-//        pch.pc.id,
-//        pch.pc.createdOn,
-//        pch.pc.review,
-//        pch.pc.score,
-//        pch.pc.parent.id
-//    )
-//    FROM postCommentChildHierarchy pch
-//    """, PostCommentRecord.class)
-//            .setParameter("commentId", 1L)
-//            .getResultList();
 
     ////////////////////////////////////////
+//    @OneToMany(	mappedBy = "parent",
+//            fetch = FetchType.LAZY,
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    public List<ProductSpecsValue> parents = new ArrayList<>();
+
+//    @OneToMany(	mappedBy = "childrens",
+//            fetch = FetchType.LAZY,
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    public List<ProductSpecsValue> childrens = new ArrayList<>();
+
+//    public ProductSpecsValue addProductSpecItem(ProductSpecItem productSpecItem) {
+//        productSpecItemList.add(productSpecItem);
+//        productSpecItem.setProductSpecsValue(this);
+//        return this;
+//    }
+//
+//
+//    public ProductSpecsValue removeProductSpecItem(ProductSpecItem productSpecItem) {
+//        productSpecItemList.remove(productSpecItem);
+//        productSpecItem.setProductSpecsValue(null);
+//        return this;
+//    }
+    ///////////////////////////////////////////////////////
+
 
     @Override
     public String toString() {
@@ -194,10 +135,6 @@ public class ProductSpecsValue implements Serializable {
     }
 
 
-
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private ProductCategory productCategory;
 
     @Override
     public boolean equals(Object o) {
@@ -218,16 +155,5 @@ public class ProductSpecsValue implements Serializable {
 
 
 
-    public ProductSpecsValue addProductSpecItem(ProductSpecItem productSpecItem) {
-        productSpecItemList.add(productSpecItem);
-        productSpecItem.setProductSpecsValue(this);
-        return this;
-    }
 
-
-    public ProductSpecsValue removeProductSpecItem(ProductSpecItem productSpecItem) {
-        productSpecItemList.remove(productSpecItem);
-        productSpecItem.setProductSpecsValue(null);
-        return this;
-    }
 }
