@@ -4,8 +4,8 @@ spring:
     show-sql: true
     #    format_sql: true
     hibernate:
-      ddl-auto: update
-        #      ddl-auto: create
+#      ddl-auto: update
+      ddl-auto: create
         #      ddl-auto: none
         #      ddl-auto: create-drop
 #      dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -18,7 +18,7 @@ spring:
   #      hibernate.cache.use_structured_entries: false
   #      hibernate.cache.use_minimal_puts: false
   datasource:
-    url: jdbc:mysql://localhost:3306/shopProducts
+    url: jdbc:mysql://localhost:3306/shopV2
     username: root
 #    url: jdbc:postgresql://localhost:5432/productsT
 #    username: postgres

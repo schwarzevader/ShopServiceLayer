@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "productSpecValueReletion")
+@Entity(name = "productSpecValueRelation")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,7 +23,9 @@ public class ProductSpecValueRelation {
     @Column(name = "product_spec_value_relation_id")
     private Long productSpecValueRelationId;
 
-    public ProductSpecsValue patent;
+    @ManyToOne
+    public ProductSpecsValue parent;
+    @ManyToOne
     public ProductSpecsValue children;
 
 

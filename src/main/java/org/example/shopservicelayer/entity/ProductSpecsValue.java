@@ -74,17 +74,7 @@ public class ProductSpecsValue implements Serializable {
     private List<ProductSpecItem> productSpecItemList = new ArrayList<>();
 
 
-//    @OneToMany(	mappedBy = "parent",
-//            fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    public List<ProductSpecsValue> parents = new ArrayList<>();
 
-//    @OneToMany(	mappedBy = "childrens",
-//            fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    public List<ProductSpecsValue> childrens = new ArrayList<>();
 
 //    @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -93,19 +83,38 @@ public class ProductSpecsValue implements Serializable {
 //            referencedColumnName = "spec_name")
     private ProductSpecName productSpecName;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
-    @Fetch(FetchMode.SUBSELECT)
-    private Set<ProductSpecsValue> followers = new HashSet<>();
-
-    @JoinTable(name = "product_spec_value_relation",
-            joinColumns = {@JoinColumn(name = "product_spec_value_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_spec_value_relation_id")})
-    @ManyToMany(cascade = CascadeType.ALL)
-    @Fetch(FetchMode.SUBSELECT)
-    private Set<ProductSpecsValue> following = new HashSet<>();
 
 
+///////////////////////////////////////// ManyToMany
 
+//    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
+//    @Fetch(FetchMode.SUBSELECT)
+//    private Set<ProductSpecsValue> followers = new HashSet<>();
+//
+//    @JoinTable(name = "product_spec_value_relation",
+//            joinColumns = {@JoinColumn(name = "product_spec_value_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "product_spec_value_relation_id")})
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @Fetch(FetchMode.SUBSELECT)
+//    private Set<ProductSpecsValue> following = new HashSet<>();
+
+//////////////////////////////////////////// OneToMany alternative
+
+    @OneToMany(	mappedBy = "parent",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    public List<ProductSpecValueRelation> parents = new ArrayList<>();
+
+    @OneToMany(	mappedBy = "children",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    public List<ProductSpecValueRelation> childrens = new ArrayList<>();
+
+    ///////////////////////////////////////////////////////////
+
+    ///////////////// parent children
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "spec_value_parent_id")
 //    private ProductSpecsValue specValueParent;
