@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Entity(name = "productSpecValue")
@@ -43,9 +43,9 @@ public class ProductSpecsValue implements Serializable {
     @Column(name = "product_spec_value_id")
     private Long valueId;
 
-    public ProductSpecsValue(List<ProductSpecsValue> children, long l, String s, Long aLong) {
-        this.children = children;
-    }
+//    public ProductSpecsValue(List<ProductSpecsValue> children, long l, String s, Long aLong) {
+//        this.children = children;
+//    }
 
 
 //    @Id
@@ -74,6 +74,17 @@ public class ProductSpecsValue implements Serializable {
     private List<ProductSpecItem> productSpecItemList = new ArrayList<>();
 
 
+//    @OneToMany(	mappedBy = "parent",
+//            fetch = FetchType.LAZY,
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    public List<ProductSpecsValue> parents = new ArrayList<>();
+
+//    @OneToMany(	mappedBy = "childrens",
+//            fetch = FetchType.LAZY,
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    public List<ProductSpecsValue> childrens = new ArrayList<>();
 
 //    @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -82,33 +93,37 @@ public class ProductSpecsValue implements Serializable {
 //            referencedColumnName = "spec_name")
     private ProductSpecName productSpecName;
 
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<ProductSpecsValue> followers = new HashSet<>();
+
+    @JoinTable(name = "product_spec_value_relation",
+            joinColumns = {@JoinColumn(name = "product_spec_value_id")},
+            inverseJoinColumns = {@JoinColumn(name = "product_spec_value_relation_id")})
+    @ManyToMany(cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<ProductSpecsValue> following = new HashSet<>();
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spec_value_parent_id")
-    private ProductSpecsValue specValueParent;
 
-
-    @OneToMany(
-            mappedBy = "specValueParent",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<ProductSpecsValue> children = new ArrayList<>();
-
-
-    public void addChildren(ProductSpecsValue children){
-        this.children.add(children);
-    }
-
-    public void removeChildren(ProductSpecsValue children){
-        this.children.remove(children);
-    }
-
-
-    public void removeParent(){
-        this.specValueParent=null;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "spec_value_parent_id")
+//    private ProductSpecsValue specValueParent;
+//    @OneToMany(
+//            mappedBy = "specValueParent",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private List<ProductSpecsValue> children = new ArrayList<>();
+//    public void addChildren(ProductSpecsValue children){
+//        this.children.add(children);
+//    }
+//    public void removeChildren(ProductSpecsValue children){
+//        this.children.remove(children);
+//    }
+//    public void removeParent(){
+//        this.specValueParent=null;
+//    }
 
 
 

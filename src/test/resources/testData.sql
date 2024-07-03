@@ -90,7 +90,7 @@ CREATE TABLE if not exists product_spec_items
         ON DELETE NO ACTION
 );
 
-
+# ///////////////////////////////////////////////////////////////
 # CREATE TABLE IF NOT EXISTS product_spec_items
 # (
 # #     product_spec_items_id BIGINT,

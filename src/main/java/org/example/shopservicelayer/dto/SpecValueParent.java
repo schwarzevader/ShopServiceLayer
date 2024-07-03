@@ -40,6 +40,13 @@ public class SpecValueParent {
 
 
 
+    public SpecValueParent(Long id, String value, List<ProductSpecsValue> children) {
+        this.id = id;
+        this.value = value;
+        this.children = children;
+
+    }
+
 
 //    private List<SpecValue > children;
 
