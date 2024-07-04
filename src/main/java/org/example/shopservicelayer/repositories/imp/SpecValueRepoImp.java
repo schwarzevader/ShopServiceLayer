@@ -5,6 +5,7 @@ import io.hypersistence.utils.hibernate.type.util.ClassImportIntegrator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.example.shopservicelayer.dto.SpecKey;
 import org.example.shopservicelayer.dto.SpecValue;
 import org.example.shopservicelayer.dto.SpecValueParent;
 import org.example.shopservicelayer.dto.Specs;
@@ -14,10 +15,7 @@ import org.hibernate.jpa.boot.spi.JpaSettings;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //@Repository
@@ -27,6 +25,41 @@ public class SpecValueRepoImp {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+
+    public List<Specs> getProductSpecs(List<Long> specsValeusIds) {
+
+
+        Map<Long, Specs> specsMap = new HashMap<>();
+        entityManager.createQuery(
+                        "select distinct " +
+                                "ppsn.id ," +
+                                "ppsn.name ," +
+                                "p.ia ," +
+                                "p.value, " +
+                                "cpsn.id, " +
+                                "cpsn.name, " +
+                                "c.id, " +
+                                "c.value  " +
+                                "from productSpecValueRelation psvr " +
+                                "join psvr.parent p " +
+                                "join psvr.children c " +
+                                "join c.productSpecName cpsn " +
+                                "join p.productSpecName ppsn " +
+                                "where p.id in : value")
+                .setParameter("value", specsValeusIds)
+                .unwrap(Query.class)
+                .setTupleTransformer((tuples, aliases) -> {
+
+                    Long specId = (Long) tuples[2];
+                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+                            .getProductSpecValues().add(new SpecValue((Long) tuples[0], (String) tuples[1], specId));
+                    return null;
+                })
+                .getResultList();
+
+        return specsMap.values().stream().toList();
+    }
 
 
 /////////////////////OneToMane ManyToOne

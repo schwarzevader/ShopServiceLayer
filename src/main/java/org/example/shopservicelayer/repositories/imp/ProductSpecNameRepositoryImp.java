@@ -132,7 +132,6 @@ public class ProductSpecNameRepositoryImp {
                         "pSV.id " +
                         "from product_spec_name pSN " +
                         "join pSN.productSpecValues pSV " +
-
                         "where pSN.productCategory.id =: value")
 //                        "where pC.id =: value")
                 .setParameter("value", categoryId)
@@ -232,17 +231,28 @@ public class ProductSpecNameRepositoryImp {
 
 
 //        return entityManager.createQuery(
+
         entityManager.createQuery(
-                        "select  " +
-                        "pSN.id" +
-                        ", pSN.name" +
-                        ", pSV.value" +
-                        ", pSV.id " +
+                "select  " +
+                        "pSN.id," +
+                        "pSN.name," +
+                        "pSV.value," +
+                        "pSV.id " +
                         "from product_spec_name  pSN " +
-                        "left join   pSN.productSpecValues pSV on pSN.id = pSV.productSpecName.id "+
-                        "left join  pSN.productCategory pC on pSN.productCategory.id=pC.id " +
-                        "where pC.id = :value " +
+                        "join   pSN.productSpecValues pSV  "+
+                        "where pSN.productCategory.id = :value " +
                         "order by pSN.sortValue")
+//        entityManager.createQuery(
+//                        "select  " +
+//                        "pSN.id" +
+//                        ", pSN.name" +
+//                        ", pSV.value" +
+//                        ", pSV.id " +
+//                        "from product_spec_name  pSN " +
+//                        "join   pSN.productSpecValues pSV  "+
+//                        "join  pSN.productCategory pC  " +
+//                        "where pC.id = :value " +
+//                        "order by pSN.sortValue")
 
                 .setParameter("value", id)
                 .unwrap(Query.class)

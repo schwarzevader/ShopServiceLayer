@@ -40,6 +40,22 @@ CREATE TABLE if not exists product_spec_names
 
 
 
+# CREATE TABLE product_spec_value (
+#                                     product_spec_value_id BIGINT PRIMARY KEY,
+#                                     value VARCHAR(255),
+#                                     product_spec_name_id BIGINT,
+#                                     CONSTRAINT fk_product_spec_name FOREIGN KEY (product_spec_name_id) REFERENCES product_spec_name(product_spec_name_id)
+# );
+#
+# CREATE TABLE product_spec_value_relation (
+#                                              product_spec_value_relation_id BIGINT PRIMARY KEY,
+#                                              parent_id BIGINT,
+#                                              children_id BIGINT,
+#                                              CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES product_spec_value(product_spec_value_id),
+#                                              CONSTRAINT fk_children FOREIGN KEY (children_id) REFERENCES product_spec_value(product_spec_value_id)
+# );
+
+
 CREATE TABLE if not exists product_spec_value
 (
     product_spec_value_id BIGINT PRIMARY KEY,
