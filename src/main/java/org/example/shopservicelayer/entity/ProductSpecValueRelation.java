@@ -22,9 +22,14 @@ public class ProductSpecValueRelation {
     @Column(name = "product_spec_value_relation_id")
     private Long productSpecValueRelationId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+
+//    @JoinColumn(name = "product_spec_value_id",insertable=false, updatable=false)
+
     public ProductSpecsValue parent;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_spec_value_id",insertable = false,updatable = false)
+
     public ProductSpecsValue children;
 
     public ProductSpecValueRelation(ProductSpecsValue parent, ProductSpecsValue children) {

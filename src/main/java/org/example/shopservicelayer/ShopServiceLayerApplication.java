@@ -26,8 +26,32 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 
 
 
+//        specValueRepoImp.add(1031L,1049L);
+//        specValueRepoImp.add(1054L,1031L);
+//        specValueRepoImp.add(1055L,1031L);
+//        specValueRepoImp.add(1056L,1031L);
+//
+//        specValueRepoImp.add(1003L,1054L);
+//        specValueRepoImp.add(1089L,1054L);
+//        specValueRepoImp.add(1090L,1054L);
+//
+//        specValueRepoImp.add(1007L,1055L);
+//        specValueRepoImp.add(1085L,1055L);
+//        specValueRepoImp.add(1086L,1055L);
+//
+//        specValueRepoImp.add(1009L,1056L);
+//        specValueRepoImp.add(1087L,1056L);
+//        specValueRepoImp.add(1088L,1056L);
 
-        specValueRepoImp.getProductSpecs(List.of());
+
+        System.out.println("-----------------------------find specs");
+
+        specValueRepoImp.getProductSpecs(List.of(1088L,1007L)).forEach(System.out::println);
+
+
+        System.out.println("-----------------------------find specs 1049");
+
+        specValueRepoImp.getProductSpecs(List.of(1049L)).forEach(System.out::println);
 
 
     }
