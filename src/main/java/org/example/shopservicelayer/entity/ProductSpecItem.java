@@ -44,6 +44,7 @@ public class ProductSpecItem implements Serializable {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Column(name = "size_quantity")
     private long sizeQuantity=0;
 
 

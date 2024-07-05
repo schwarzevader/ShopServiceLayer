@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+
 @SpringBootApplication
 @Slf4j
 public class ShopServiceLayerApplication implements CommandLineRunner {
@@ -25,6 +27,7 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 
 
 
+        specValueRepoImp.getProductSpecs(List.of());
 
 
     }

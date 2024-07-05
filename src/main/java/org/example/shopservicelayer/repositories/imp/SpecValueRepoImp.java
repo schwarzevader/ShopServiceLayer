@@ -9,6 +9,7 @@ import org.example.shopservicelayer.dto.SpecKey;
 import org.example.shopservicelayer.dto.SpecValue;
 import org.example.shopservicelayer.dto.SpecValueParent;
 import org.example.shopservicelayer.dto.Specs;
+import org.example.shopservicelayer.entity.ProductSpecValueRelation;
 import org.example.shopservicelayer.entity.ProductSpecsValue;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.hibernate.jpa.boot.spi.JpaSettings;
@@ -27,15 +28,20 @@ public class SpecValueRepoImp {
     private EntityManager entityManager;
 
 
+    public void add(Long chId,Long pId){
+        this.entityManager.persist(new ProductSpecValueRelation(
+                this.entityManager.find(ProductSpecsValue.class,pId),
+                this.entityManager.find(ProductSpecsValue.class,chId)
+                )
+        );
+    }
     public List<Specs> getProductSpecs(List<Long> specsValeusIds) {
-
-
         Map<Long, Specs> specsMap = new HashMap<>();
         entityManager.createQuery(
                         "select distinct " +
                                 "ppsn.id ," +
                                 "ppsn.name ," +
-                                "p.ia ," +
+                                "p.id ," +
                                 "p.value, " +
                                 "cpsn.id, " +
                                 "cpsn.name, " +
@@ -51,9 +57,12 @@ public class SpecValueRepoImp {
                 .unwrap(Query.class)
                 .setTupleTransformer((tuples, aliases) -> {
 
-                    Long specId = (Long) tuples[2];
-                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
-                            .getProductSpecValues().add(new SpecValue((Long) tuples[0], (String) tuples[1], specId));
+                    Long specNameId = (Long) tuples[0];
+                    specsMap.computeIfAbsent(specNameId, k -> new Specs(specNameId, (String) tuples[1]))
+                            .getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specNameId));
+                    Long childrenSpecNameId = (Long) tuples[4];
+                    specsMap.computeIfAbsent(childrenSpecNameId, k -> new Specs(childrenSpecNameId, (String) tuples[5]))
+                            .getProductSpecValues().add(new SpecValue((Long) tuples[6], (String) tuples[7], childrenSpecNameId));
                     return null;
                 })
                 .getResultList();

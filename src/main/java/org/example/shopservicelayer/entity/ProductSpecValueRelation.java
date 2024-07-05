@@ -12,7 +12,6 @@ import java.util.List;
 @Entity(name = "productSpecValueRelation")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "product_spec_value_relation")
 
@@ -28,6 +27,8 @@ public class ProductSpecValueRelation {
     @ManyToOne
     public ProductSpecsValue children;
 
-
-
+    public ProductSpecValueRelation(ProductSpecsValue parent, ProductSpecsValue children) {
+        this.parent = parent;
+        this.children = children;
+    }
 }
