@@ -44,53 +44,43 @@ public class ProductSpecsValue implements Serializable {
     private ProductSpecName productSpecName;
 
 
-    @OneToMany(	mappedBy = "parent",
-            fetch = FetchType.LAZY,
+
+
+
+
+    /////////////// parent children
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "spec_value_parent_id")
+    private ProductSpecsValue specValueParent;
+    @OneToMany(
+            mappedBy = "specValueParent",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    public List<ProductSpecValueRelation> parents = new ArrayList<>();
+            orphanRemoval = true
+    )
+    private List<ProductSpecsValue> children = new ArrayList<>();
+    public void addChildren(ProductSpecsValue children){
+        this.children.add(children);
+    }
+    public void removeChildren(ProductSpecsValue children){
+        this.children.remove(children);
+    }
+    public void removeParent(){
+        this.specValueParent=null;
+    }
 
-    @OneToMany(	mappedBy = "children",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    public List<ProductSpecValueRelation> childrens = new ArrayList<>();
+    public ProductSpecsValue addProductSpecItem(ProductSpecItem productSpecItem) {
+        productSpecItemList.add(productSpecItem);
+        productSpecItem.setProductSpecsValue(this);
+        return this;
+    }
 
-    ///////////////////////////////////////////////////////////
 
-    ///////////////// parent children
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "spec_value_parent_id")
-//    private ProductSpecsValue specValueParent;
-//    @OneToMany(
-//            mappedBy = "specValueParent",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private List<ProductSpecsValue> children = new ArrayList<>();
-//    public void addChildren(ProductSpecsValue children){
-//        this.children.add(children);
-//    }
-//    public void removeChildren(ProductSpecsValue children){
-//        this.children.remove(children);
-//    }
-//    public void removeParent(){
-//        this.specValueParent=null;
-//    }
+    public ProductSpecsValue removeProductSpecItem(ProductSpecItem productSpecItem) {
+        productSpecItemList.remove(productSpecItem);
+        productSpecItem.setProductSpecsValue(null);
+        return this;
+    }
 
-//    public ProductSpecsValue addProductSpecItem(ProductSpecItem productSpecItem) {
-//        productSpecItemList.add(productSpecItem);
-//        productSpecItem.setProductSpecsValue(this);
-//        return this;
-//    }
-//
-//
-//    public ProductSpecsValue removeProductSpecItem(ProductSpecItem productSpecItem) {
-//        productSpecItemList.remove(productSpecItem);
-//        productSpecItem.setProductSpecsValue(null);
-//        return this;
-//    }
-///////////////////////////////////////////////////
 
 
 

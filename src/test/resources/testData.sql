@@ -61,21 +61,21 @@ CREATE TABLE if not exists product_spec_value
     product_spec_value_id BIGINT PRIMARY KEY,
     value                 VARCHAR(255) NOT NULL,
     product_spec_name_id  BIGINT,
-#     specValueParent_id    BIGINT,
+    spec_value_parent_id    BIGINT,
     CONSTRAINT fk_product_spec_name
         FOREIGN KEY (product_spec_name_id) REFERENCES product_spec_names (product_spec_name_id)
-# ,CONSTRAINT fk_spec_value_parent FOREIGN KEY (specValueParent_id) REFERENCES product_spec_value (product_spec_value_id)
+,CONSTRAINT fk_spec_value_parent FOREIGN KEY (spec_value_parent_id) REFERENCES product_spec_value (product_spec_value_id)
 );
 
 
 
-CREATE TABLE if not exists product_spec_value_relation (
-                                             product_spec_value_relation_id BIGINT PRIMARY KEY,
-                                             parent_product_spec_value_id BIGINT,
-                                             children_product_spec_value_id BIGINT,
-                                             FOREIGN KEY (parent_product_spec_value_id) REFERENCES product_spec_value(product_spec_value_id),
-                                             FOREIGN KEY (children_product_spec_value_id) REFERENCES product_spec_value(product_spec_value_id)
-);
+# CREATE TABLE if not exists product_spec_value_relation (
+#                                              product_spec_value_relation_id BIGINT PRIMARY KEY,
+#                                              parent_product_spec_value_id BIGINT,
+#                                              children_product_spec_value_id BIGINT,
+#                                              FOREIGN KEY (parent_product_spec_value_id) REFERENCES product_spec_value(product_spec_value_id),
+#                                              FOREIGN KEY (children_product_spec_value_id) REFERENCES product_spec_value(product_spec_value_id)
+# );
 
 # CREATE TABLE if not exists product_spec_value_relation
 # (
