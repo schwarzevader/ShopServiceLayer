@@ -1,24 +1,18 @@
 package org.example.shopservicelayer.repositories.imp;
 
 
-import io.hypersistence.utils.hibernate.type.util.ClassImportIntegrator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.example.shopservicelayer.dto.SpecValue;
-import org.example.shopservicelayer.dto.SpecValueParent;
 import org.example.shopservicelayer.dto.Specs;
 import org.example.shopservicelayer.entity.ProductSpecsValue;
-import org.hibernate.jpa.boot.spi.IntegratorProvider;
-import org.hibernate.jpa.boot.spi.JpaSettings;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.stream.Collectors;
 
 //@Repository
 @Service
@@ -69,7 +63,7 @@ public class SpecValueRepoImp {
         return specsMap.values().stream().toList();
     }
 
-        public List<Specs> getSpecsAndValues(Long id){
+        public List<Specs> getSpecsChildrensValues(Long id){
 
         Map<Long, Specs> specsMap = new HashMap<>();
         this.entityManager.createQuery(
@@ -101,6 +95,150 @@ public class SpecValueRepoImp {
                             .getProductSpecValues().add(new SpecValue( (Long) tuples[0],(String) tuples[1],  specId));
                     return  null;
                 }).getResultList();
+        return specsMap.values().stream().toList();
+    }
+
+    public List<Specs> getSpecsParentsAndChildrensValues(Long id) {
+        Map<Long, Specs> specsMap = new HashMap<>();
+//        this.entityManager.createQuery(
+//                        "WITH specValueHierarchy AS (" +
+//                                "SELECT psv.parents AS svh, psv.childrens AS svh2 " +
+//                                "FROM productSpecValue psv " +
+//                                "WHERE psv.id = :id " +
+//                                "UNION ALL " +
+//                                "SELECT psv2.parents AS svh, psv2.childrens AS svh2 " +
+//                                "FROM productSpecValue psv2 " +
+//                                "JOIN specValueHierarchy svh ON psv2 = svh.svh " +
+//                                "JOIN specValueHierarchy svh2 ON psv2 = svh2.svh2" +
+//                                ") " +
+//                                "SELECT " +
+//                                "svh.svh.id, svh.svh.value, svh.svh.productSpecName.id, svh.svh.productSpecName.name, " +
+//                                "svh2.svh2.id, svh2.svh2.value, svh2.svh2.productSpecName.id, svh2.svh2.productSpecName.name " +
+//                                "FROM specValueHierarchy svh " +
+//                                "JOIN specValueHierarchy svh2 ON svh.svh.id = svh2.svh2.id")
+//                .setParameter("id", id).unwrap(Query.class)
+//                .setResultTransformer((tuples, aliases) -> {
+//                    System.out.println("--------------------------------");
+//                    System.out.println("0===" + tuples[0]);
+//                    System.out.println("1===" + tuples[1]);
+//                    System.out.println("2===" + tuples[2]);
+//                    System.out.println("3===" + tuples[3]);
+//                    System.out.println("4===" + tuples[4]);
+//                    System.out.println("5===" + tuples[5]);
+//                    System.out.println("6===" + tuples[6]);
+//                    System.out.println("7===" + tuples[7]);
+//
+//                    Long specId = (Long) tuples[2];
+//                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+//                            .getProductSpecValues().add(new SpecValue((Long) tuples[0], (String) tuples[1], specId));
+//                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[7]))
+//                            .getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
+//                    return null;
+//                }).getResultList();
+//        return specsMap.values().stream().toList();
+
+        this.entityManager.createQuery(
+                        "WITH specValueParentsHierarchy AS (" +
+                                "SELECT psv.parents svh " +
+                                "FROM productSpecValue psv " +
+                                "WHERE psv.id = :id " +
+                                "UNION ALL " +
+                                "SELECT psv2.parents svh2 " +
+                                "FROM productSpecValue psv2 " +
+                                "JOIN specValueParentsHierarchy svph ON psv2 = svph.svh" +
+                                "), " +
+                                "specValueChildrenHierarchy AS (" +
+                                "SELECT psv.childrens svh " +
+                                "FROM productSpecValue psv " +
+                                "WHERE psv.id = :id " +
+                                "UNION ALL " +
+                                "SELECT psv2.childrens svh2 " +
+                                "FROM productSpecValue psv2 " +
+                                "JOIN specValueChildrenHierarchy svch ON psv2 = svch.svh" +
+                                ") " +
+                                "SELECT " +
+                                "svph.svh.id, svph.svh.value, svph.svh.productSpecName.id, svph.svh.productSpecName.name " +
+                                "FROM specValueParentsHierarchy svph " +
+                                "UNION " +
+                                "SELECT " +
+                                "svch.svh.id, svch.svh.value, svch.svh.productSpecName.id, svch.svh.productSpecName.name " +
+                                "FROM specValueChildrenHierarchy svch")
+                .setParameter("id", id).unwrap(Query.class)
+                .setResultTransformer((tuples, aliases) -> {
+                    System.out.println("--------------------------------");
+                    System.out.println("0===" + tuples[0]);
+                    System.out.println("1===" + tuples[1]);
+                    System.out.println("2===" + tuples[2]);
+
+                    Long specId = (Long) tuples[2];
+                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+                            .getProductSpecValues().add(new SpecValue((Long) tuples[0], (String) tuples[1], specId));
+                    return null;
+                }).getResultList();
+
+
+        ////////////////////////////////////////////////
+//        this.entityManager.createQuery(
+//                        "WITH specValueChildrenHierarchy AS (" +
+//                                "SELECT psv.parents svh  " +
+//                                "FROM productSpecValue psv " +
+//                                "WHERE psv.id = :id " +
+//                                "UNION ALL " +
+//                                "SELECT psv2.parents svh2 " +
+//                                "FROM productSpecValue psv2 " +
+//
+//                                "JOIN specValueChildrenHierarchy svch ON psv2 = svch.svh" +
+//                                ") " +
+//                                "SELECT" +
+//                                " svch.svh.id, " +
+//                                "svch.svh.value, " +
+//                                "svch.svh.productSpecName.id," +
+//                                "svch.svh.productSpecName.name " +
+//                                " FROM specValueChildrenHierarchy svch")
+//                .setParameter("id", id).unwrap(Query.class)
+//                .setResultTransformer((tuples, aliases) -> {
+//                    System.out.println("parents --------------------------------");
+//                    System.out.println("0==="+tuples[0]);
+//                    System.out.println("1==="+tuples[1]);
+//                    System.out.println("2==="+tuples[2]);
+//
+//                    Long specId= (Long) tuples[2];
+//                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+//                            .getProductSpecValues().add(new SpecValue( (Long) tuples[0],(String) tuples[1],  specId));
+//                    return  null;
+//                }).getResultList();
+//
+//        this.entityManager.createQuery(
+//                        "WITH specValueChildrenHierarchy AS (" +
+//                                "SELECT psv.childrens svh  " +
+//                                "FROM productSpecValue psv " +
+//                                "WHERE psv.id = :id " +
+//                                "UNION ALL " +
+//                                "SELECT psv2.childrens svh2 " +
+//                                "FROM productSpecValue psv2 " +
+//
+//                                "JOIN specValueChildrenHierarchy svch ON psv2 = svch.svh" +
+//                                ") " +
+//                                "SELECT" +
+//                                " svch.svh.id, " +
+//                                "svch.svh.value, " +
+//                                "svch.svh.productSpecName.id," +
+//                                "svch.svh.productSpecName.name " +
+//                                " FROM specValueChildrenHierarchy svch")
+//                .setParameter("id", id).unwrap(Query.class)
+//                .setResultTransformer((tuples, aliases) -> {
+//                    System.out.println("childrens --------------------------------");
+//                    System.out.println("0==="+tuples[0]);
+//                    System.out.println("1==="+tuples[1]);
+//                    System.out.println("2==="+tuples[2]);
+//
+//                    Long specId= (Long) tuples[2];
+//                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+//                            .getProductSpecValues().add(new SpecValue( (Long) tuples[0],(String) tuples[1],  specId));
+//                    return  null;
+//                }).getResultList();
+
+
         return specsMap.values().stream().toList();
     }
 
