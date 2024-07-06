@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.Collections;
+import java.util.List;
+
 @SpringBootApplication
 @Slf4j
 public class ShopServiceLayerApplication implements CommandLineRunner {
@@ -46,11 +49,12 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 //        System.out.println("---------------------------- getChildrens 1049");
 //        specValueRepoImp.getSpecsChildrensValues(1049L);
 
-        System.out.println("---------------------------- getParents 1088");
-        specValueRepoImp.getSpecsParentsAndChildrensValues(1088L);
+        System.out.println("---------------------------- getParents 1031");
+//        specValueRepoImp.getSpecsParentsAndChildrensValues(1088L);
+        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1031L));
 
         System.out.println("---------------------------- getChildrens 1049");
-        specValueRepoImp.getSpecsParentsAndChildrensValues(1049L);
+        specValueRepoImp.getSpecsParentsAndChildrensValues(Collections.singletonList(1049L));
 
     }
 }
