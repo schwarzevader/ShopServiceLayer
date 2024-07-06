@@ -39,50 +39,17 @@ public class SpecValueRepoImp {
         Map<Long, Specs> specsMap = new HashMap<>();
 
 
-//        entityManager.createQuery(
-//                        "select distinct " +
-//                                "cpsn.id, " +
-//                                "cpsn.name, " +
-//                                "c.id, " +
-//                                "c.value  " +
-//                                "from productSpecValueRelation psvr " +
-//                                "join psvr.children c " +
-//                                "join c.productSpecName cpsn " +
-////                                "where c.id in : value "+
-//                                "where c.id in : value "
-////                                + "and p.id in : value"
-//                )
-//                .setParameter("value", specsValeusIds)
-//                .unwrap(Query.class)
-//                .setTupleTransformer((tuples, aliases) -> {
-//                    System.out.println("--------------------------");
-//                    System.out.println("tuple-0==="+tuples[0]);
-//                    System.out.println("tuple-1==="+tuples[1]);
-//                    System.out.println("tuple-2==="+tuples[2]);
-//                    System.out.println("tuple-3==="+tuples[3]);
-//
-//                    Long specNameId = (Long) tuples[0];
-//                    specsMap.computeIfAbsent(specNameId, k -> new Specs(specNameId, (String) tuples[1]))
-//                            .getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specNameId));
-//
-//                    return null;
-//                })
-//                .getResultList();
-//
-//
         entityManager.createQuery(
                         "select distinct " +
-                                "ppsn.id ," +
-                                "ppsn.name ," +
-                                "p.id ," +
-                                "p.value " +
-
+                                "psvr.children.productSpecName.id, " +
+                                "psvr.children.productSpecName.name, " +
+                                "psvr.children.id, " +
+                                "psvr.children.value  " +
                                 "from productSpecValueRelation psvr " +
-                                "join psvr.parent p " +
-                                "join p.productSpecName ppsn " +
+
 //                                "where c.id in : value "+
-                                "where p.id in : value "
-//                                + "and p.id in : value"
+                                "where psvr.children.id in : value "
+                                + "and psvr.parent.id in : value"
                 )
                 .setParameter("value", specsValeusIds)
                 .unwrap(Query.class)
@@ -93,13 +60,14 @@ public class SpecValueRepoImp {
                     System.out.println("tuple-2==="+tuples[2]);
                     System.out.println("tuple-3==="+tuples[3]);
 
-
                     Long specNameId = (Long) tuples[0];
                     specsMap.computeIfAbsent(specNameId, k -> new Specs(specNameId, (String) tuples[1]))
                             .getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specNameId));
+
                     return null;
                 })
                 .getResultList();
+//
 
 
         /////////////////////////
