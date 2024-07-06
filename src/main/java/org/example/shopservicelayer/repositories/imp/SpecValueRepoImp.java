@@ -28,6 +28,47 @@ public class SpecValueRepoImp {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public void add( Long children,Long parent) {
+        this.entityManager.find(ProductSpecsValue.class,children)
+                .addParent(this.entityManager.find(ProductSpecsValue.class,parent));
+    }
+
+        public List<Specs> getSpecsAndValues(Long id){
+
+        Map<Long, Specs> specsMap = new HashMap<>();
+        this.entityManager.createQuery(
+                        "WITH specValueChildrenHierarchy AS (" +
+                                "SELECT psv.childrens svh  " +
+                                "FROM productSpecValue psv " +
+                                "WHERE psv.id = :id " +
+                                "UNION ALL " +
+                                "SELECT psv2.childrens svh2 " +
+                                "FROM productSpecValue psv2 " +
+
+                                "JOIN specValueChildrenHierarchy svch ON psv2 = svch.svh" +
+                                ") " +
+                                "SELECT" +
+                                " svch.svh.id, " +
+                                "svch.svh.value, " +
+                                "svch.svh.productSpecName.id," +
+                                "svch.svh.productSpecName.name " +
+                                " FROM specValueChildrenHierarchy svch")
+                .setParameter("id", id).unwrap(Query.class)
+                .setResultTransformer((tuples, aliases) -> {
+                    System.out.println("--------------------------------");
+                    System.out.println("0==="+tuples[0]);
+                    System.out.println("1==="+tuples[1]);
+                    System.out.println("2==="+tuples[2]);
+
+                    Long specId= (Long) tuples[2];
+                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+                            .getProductSpecValues().add(new SpecValue( (Long) tuples[0],(String) tuples[1],  specId));
+                    return  null;
+                }).getResultList();
+        return specsMap.values().stream().toList();
+    }
+
+
 
 /////////////////////OneToMane ManyToOne
 //    public void addChildren(Long childrenId, Long parentId) {

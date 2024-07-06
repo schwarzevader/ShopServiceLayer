@@ -40,10 +40,9 @@ CREATE TABLE if not exists product_spec_names
 
 
 
-
-CREATE TABLE  if not exists product_spec_value
+CREATE TABLE if not exists product_spec_value
 (
-    product_spec_value_id BIGINT PRIMARY KEY ,
+    product_spec_value_id BIGINT PRIMARY KEY,
     value                 VARCHAR(255) NOT NULL,
     product_spec_name_id  BIGINT,
 #     specValueParent_id    BIGINT,
@@ -52,12 +51,20 @@ CREATE TABLE  if not exists product_spec_value
 # ,CONSTRAINT fk_spec_value_parent FOREIGN KEY (specValueParent_id) REFERENCES product_spec_value (product_spec_value_id)
 );
 
-CREATE TABLE product_spec_value_relation (
-                                             product_spec_value_id BIGINT,
-                                             product_spec_value_relation_id BIGINT,
-                                             PRIMARY KEY (product_spec_value_id, product_spec_value_relation_id),
-                                             FOREIGN KEY (product_spec_value_id) REFERENCES product_spec_value(product_spec_value_id),
-                                             FOREIGN KEY (product_spec_value_relation_id) REFERENCES product_spec_value(product_spec_value_id)
+# create table product_spec_value_relation
+# (
+#     product_spec_value_id          bigint not null,
+#     product_spec_value_relation_id bigint not null,
+#     primary key (product_spec_value_id, product_spec_value_relation_id)
+# );
+
+CREATE TABLE product_spec_value_relation
+(
+    product_spec_value_id          BIGINT,
+    product_spec_value_relation_id BIGINT,
+    PRIMARY KEY (product_spec_value_id, product_spec_value_relation_id),
+    FOREIGN KEY (product_spec_value_id) REFERENCES product_spec_value (product_spec_value_id),
+    FOREIGN KEY (product_spec_value_relation_id) REFERENCES product_spec_value (product_spec_value_id)
 );
 
 CREATE TABLE if not exists products
@@ -69,7 +76,7 @@ CREATE TABLE if not exists products
     quantity            integer,
     product_category_id bigint,
     rating              double precision,
-    shadowRating        double precision,
+    shadow_rating       double precision,
     CONSTRAINT products_pkey PRIMARY KEY (product_id),
     CONSTRAINT fk_products_product_categories FOREIGN KEY (product_category_id)
         REFERENCES product_categories (product_category_id) MATCH SIMPLE
@@ -83,7 +90,7 @@ CREATE TABLE if not exists products
 CREATE TABLE if not exists product_spec_items
 (
     product_spec_item_id  bigint NOT NULL,
-    sizeQuantity          bigint,
+    size_quantity         bigint default 0,
     product_id            bigint,
     product_spec_value_id bigint,
     CONSTRAINT product_spec_items_pkey PRIMARY KEY (product_spec_item_id),
@@ -402,7 +409,7 @@ VALUES (1001, '16', 1000),
 -- ON CONFLICT DO NOTHING
 ;
 
-INSERT INTO products(product_id, name, price, description, quantity, product_category_id, rating, shadowRating)
+INSERT INTO products(product_id, name, price, description, quantity, product_category_id, rating, shadow_rating)
 VALUES (1000, 'MacBook apple 36 99wt more than fullHD  m cpu M1 graphics white m1 16.1 Apple M M1 1TB  ', 118.0,
         'Ea eligendi tempora magnam quas; perspiciatis ullam quia.', 921, 1000, 4, 4),
        (1001, 'MacBook apple 18 50wt more than fullHD  m cpu M1 graphics white m1 14 Apple M M1 512  ', 21.0,
@@ -3985,7 +3992,7 @@ VALUES (1000, 1000, 1008),
 ;
 
 
-INSERT INTO product_spec_items (product_spec_item_id, product_id, product_spec_value_id, sizeQuantity)
+INSERT INTO product_spec_items (product_spec_item_id, product_id, product_spec_value_id, size_quantity)
 VALUES (4000, 4000, 4017, 0),
        (4001, 4000, 4001, 0),
        (4002, 4000, 4005, 0),

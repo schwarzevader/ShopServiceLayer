@@ -84,16 +84,25 @@ public class ProductSpecsValue implements Serializable {
     private ProductSpecName productSpecName;
 
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "following")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "childrens")
     @Fetch(FetchMode.SUBSELECT)
-    private Set<ProductSpecsValue> followers = new HashSet<>();
+    private Set<ProductSpecsValue> parents = new HashSet<>();
 
     @JoinTable(name = "product_spec_value_relation",
             joinColumns = {@JoinColumn(name = "product_spec_value_id")},
             inverseJoinColumns = {@JoinColumn(name = "product_spec_value_relation_id")})
     @ManyToMany(cascade = CascadeType.ALL)
     @Fetch(FetchMode.SUBSELECT)
-    private Set<ProductSpecsValue> following = new HashSet<>();
+    private Set<ProductSpecsValue> childrens = new HashSet<>();
+
+    public void addParent(ProductSpecsValue parent) {
+//        if (!this.parents.isEmpty()) {
+//            throw new IllegalArgumentException();
+//        }
+        this.parents.add(parent);
+        parent.getChildrens().add(this);
+
+    }
 
 
 
