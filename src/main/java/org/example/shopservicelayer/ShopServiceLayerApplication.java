@@ -49,12 +49,12 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 //        System.out.println("---------------------------- getChildrens 1049");
 //        specValueRepoImp.getSpecsChildrensValues(1049L);
 
-        System.out.println("---------------------------- getParents 1031");
+//        System.out.println("---------------------------- getParents 1031");
 //        specValueRepoImp.getSpecsParentsAndChildrensValues(1088L);
-        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1031L));
+//        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1031L));
 
-        System.out.println("---------------------------- getChildrens 1049");
-        specValueRepoImp.getSpecsParentsAndChildrensValues(Collections.singletonList(1049L));
+        System.out.println("---------------------------- getChildrens 1049,1031");
+        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1049L,1031L)).forEach(System.out::println);
 
     }
 }

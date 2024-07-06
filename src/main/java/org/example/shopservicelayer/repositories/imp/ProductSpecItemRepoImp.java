@@ -47,16 +47,18 @@ public class ProductSpecItemRepoImp {
 
         Map<SpecKey, List<SpecValue>> specsListMap = new HashMap<>();
         entityManager.createQuery(
-                        "select  pSN.id ," +
-                        "pSN.name ," +
-                        "pSV.value ," +
-                        "pSV.id " +
-                        "from product_spec_name pSN " +
+                        "select " +
+                                " pSN.id ," +
+                                "pSN.name ," +
+                                "pSV.value ," +
+                                "pSV.id " +
+                                "from product_spec_name pSN " +
+//                                ",pSN.productSpecValues as pSV " +
                         "join pSN.productSpecValues pSV " +
 //                        "join pSV.ListSpecValue " +
-                        "where  pSV.id  in :value " +
-                        "group by pSV.id " +
-                        "having count(distinct pSV.id) = :valueCount")
+                                "where  pSV.id  in :value " +
+                                "group by pSV.id " +
+                                "having count(distinct pSV.id) = :valueCount")
                 .setParameter("value", idList)
                 .setParameter("valueCount", idList.size())
 //                .setHint("javax.persistence.fetchgraph", entityGraph)
@@ -99,7 +101,7 @@ public class ProductSpecItemRepoImp {
                                                          ",p.price" +
                                                          ",p.rating" +
                                                          ",p.shadowRating " +
-                                                         "from productSpecItem psi " +
+                                                         "from productSpecItem psi  " +
                                                          "join psi.product p " +
                                                          "join psi.productSpecsValue psv " +
                                                          " where psv.id in :values " +
