@@ -51,7 +51,7 @@ CREATE TABLE if not exists product_spec_value
 # ,CONSTRAINT fk_spec_value_parent FOREIGN KEY (specValueParent_id) REFERENCES product_spec_value (product_spec_value_id)
 );
 
-# create table product_spec_value_relation
+# create table if not exsists product_spec_value_relation
 # (
 #     product_spec_value_id          bigint not null,
 #     product_spec_value_relation_id bigint not null,

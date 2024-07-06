@@ -18,8 +18,8 @@ spring:
   #      hibernate.cache.use_structured_entries: false
   #      hibernate.cache.use_minimal_puts: false
   datasource:
-#    url: jdbc:mysql://localhost:3306/shopV1
-    url: jdbc:mysql://localhost:3306/shopTest
+    url: jdbc:mysql://localhost:3306/shopV1
+#    url: jdbc:mysql://localhost:3306/shopTest
     username: root
 #    url: jdbc:postgresql://localhost:5432/productsT
 #    username: postgres
