@@ -70,51 +70,15 @@ public class SpecValueRepoImp {
 //                .getResultList();
 //
 //
-//        entityManager.createQuery(
-//                        "select distinct " +
-//                                "ppsn.id ," +
-//                                "ppsn.name ," +
-//                                "p.id ," +
-//                                "p.value " +
-//
-//                                "from productSpecValueRelation psvr " +
-//                                "join psvr.parent p " +
-//                                "join p.productSpecName ppsn " +
-////                                "where c.id in : value "+
-//                                "where p.id in : value "
-////                                + "and p.id in : value"
-//                )
-//                .setParameter("value", specsValeusIds)
-//                .unwrap(Query.class)
-//                .setTupleTransformer((tuples, aliases) -> {
-//                    System.out.println("--------------------------");
-//                    System.out.println("tuple-0==="+tuples[0]);
-//                    System.out.println("tuple-1==="+tuples[1]);
-//                    System.out.println("tuple-2==="+tuples[2]);
-//                    System.out.println("tuple-3==="+tuples[3]);
-//
-//
-//                    Long specNameId = (Long) tuples[0];
-//                    specsMap.computeIfAbsent(specNameId, k -> new Specs(specNameId, (String) tuples[1]))
-//                            .getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specNameId));
-//                    return null;
-//                })
-//                .getResultList();
-
         entityManager.createQuery(
                         "select distinct " +
                                 "ppsn.id ," +
                                 "ppsn.name ," +
                                 "p.id ," +
-                                "p.value, " +
-                                "cpsn.id, " +
-                                "cpsn.name, " +
-                                "c.id, " +
-                                "c.value  " +
+                                "p.value " +
+
                                 "from productSpecValueRelation psvr " +
                                 "join psvr.parent p " +
-                                "join psvr.children c " +
-                                "join c.productSpecName cpsn " +
                                 "join p.productSpecName ppsn " +
 //                                "where c.id in : value "+
                                 "where p.id in : value "
@@ -128,20 +92,59 @@ public class SpecValueRepoImp {
                     System.out.println("tuple-1==="+tuples[1]);
                     System.out.println("tuple-2==="+tuples[2]);
                     System.out.println("tuple-3==="+tuples[3]);
-                    System.out.println("tuple-4==="+tuples[4]);
-                    System.out.println("tuple-5==="+tuples[5]);
-                    System.out.println("tuple-6==="+tuples[6]);
-                    System.out.println("tuple-7==="+tuples[7]);
+
 
                     Long specNameId = (Long) tuples[0];
                     specsMap.computeIfAbsent(specNameId, k -> new Specs(specNameId, (String) tuples[1]))
                             .getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specNameId));
-                    Long childrenSpecNameId = (Long) tuples[4];
-                    specsMap.computeIfAbsent(childrenSpecNameId, k -> new Specs(childrenSpecNameId, (String) tuples[5]))
-                            .getProductSpecValues().add(new SpecValue((Long) tuples[6], (String) tuples[7], childrenSpecNameId));
                     return null;
                 })
                 .getResultList();
+
+
+        /////////////////////////
+
+//        entityManager.createQuery(
+//                        "select distinct " +
+//                                "ppsn.id ," +
+//                                "ppsn.name ," +
+//                                "p.id ," +
+//                                "p.value, " +
+//                                "cpsn.id, " +
+//                                "cpsn.name, " +
+//                                "c.id, " +
+//                                "c.value  " +
+//                                "from productSpecValueRelation psvr " +
+//                                "join psvr.parent p " +
+//                                "join psvr.children c " +
+//                                "join c.productSpecName cpsn " +
+//                                "join p.productSpecName ppsn " +
+////                                "where c.id in : value "+
+//                                "where p.id in : value "
+//                                + "and p.id in : value"
+//                )
+//                .setParameter("value", specsValeusIds)
+//                .unwrap(Query.class)
+//                .setTupleTransformer((tuples, aliases) -> {
+//                    System.out.println("--------------------------");
+//                    System.out.println("tuple-0==="+tuples[0]);
+//                    System.out.println("tuple-1==="+tuples[1]);
+//                    System.out.println("tuple-2==="+tuples[2]);
+//                    System.out.println("tuple-3==="+tuples[3]);
+//                    System.out.println("tuple-4==="+tuples[4]);
+//                    System.out.println("tuple-5==="+tuples[5]);
+//                    System.out.println("tuple-6==="+tuples[6]);
+//                    System.out.println("tuple-7==="+tuples[7]);
+//
+//                    Long specNameId = (Long) tuples[0];
+//                    specsMap.computeIfAbsent(specNameId, k -> new Specs(specNameId, (String) tuples[1]))
+//                            .getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specNameId));
+//                    Long childrenSpecNameId = (Long) tuples[4];
+//                    specsMap.computeIfAbsent(childrenSpecNameId, k -> new Specs(childrenSpecNameId, (String) tuples[5]))
+//                            .getProductSpecValues().add(new SpecValue((Long) tuples[6], (String) tuples[7], childrenSpecNameId));
+//                    return null;
+//                })
+//                .getResultList();
 
 
 
