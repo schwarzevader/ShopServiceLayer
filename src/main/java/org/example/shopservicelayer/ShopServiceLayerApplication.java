@@ -53,8 +53,9 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 //        specValueRepoImp.getSpecsParentsAndChildrensValues(1088L);
 //        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1031L));
 
-        System.out.println("---------------------------- getChildrens 1049,1031");
-        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1049L,1031L)).forEach(System.out::println);
+//        System.out.println("---------------------------- getChildrens 1049,1031");
+//        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1049L,1031L)).forEach(System.out::println);
+
 
     }
 }

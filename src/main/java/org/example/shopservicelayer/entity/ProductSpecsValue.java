@@ -84,14 +84,14 @@ public class ProductSpecsValue implements Serializable {
     private ProductSpecName productSpecName;
 
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "childrens")
+    @ManyToMany(mappedBy = "childrens", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(FetchMode.SUBSELECT)
     private Set<ProductSpecsValue> parents = new HashSet<>();
 
     @JoinTable(name = "product_spec_value_relation",
             joinColumns = {@JoinColumn(name = "product_spec_value_id")},
             inverseJoinColumns = {@JoinColumn(name = "product_spec_value_relation_id")})
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(FetchMode.SUBSELECT)
     private Set<ProductSpecsValue> childrens = new HashSet<>();
 
