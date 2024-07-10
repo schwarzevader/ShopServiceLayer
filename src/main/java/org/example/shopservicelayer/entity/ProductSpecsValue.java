@@ -22,57 +22,16 @@ import java.util.*;
 @Table(name = "product_spec_value")
 @NamedEntityGraph(
         name = "ProductSpecsValue")
-//@SqlResultSetMapping(
-//        name = "SpecValueParentMapping",
-//        classes = @ConstructorResult(
-//                targetClass = SpecValueParent.class,
-//                columns = {
-//                        @ColumnResult(name = "id", type = Long.class),
-//                        @ColumnResult(name = "value", type = String.class),
-//                        @ColumnResult(name = "children", type = List.class),
-//                        @ColumnResult(name = "parentId", type = Long.class)
-//                }
-//        )
-//)
-//@Table(schema = "public" ,name = "product_spec_value")
 public class ProductSpecsValue implements Serializable {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_spec_value_id")
     private Long valueId;
 
-//    public ProductSpecsValue(List<ProductSpecsValue> children, long l, String s, Long aLong) {
-//        this.children = children;
-//    }
-
-
-//    @Id
-//    @ManyToOne
-//    private Person person;
-
-    //    private String name;
 
     @Column(name = "value")
     private String value;
-
-
-
-
-
-//    @OneToMany(	mappedBy = "productSpecs",
-//            fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    private List<ProductSpecItem> productSpecItemValue = new ArrayList<>();
-
-    @OneToMany(	mappedBy = "productSpecsValue",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<ProductSpecItem> productSpecItemList = new ArrayList<>();
-
 
 
 
