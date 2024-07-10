@@ -135,16 +135,16 @@ public class Product  implements Serializable {
     public void addProductSpecsValue(ProductSpecsValue productSpecsValue) {
         ProductSpecItem productSpecItem = new ProductSpecItem(this,productSpecsValue);
         productSpecItemList.add(productSpecItem);
-        productSpecsValue.getProductSpecItemList().add(productSpecItem);
     }
 
 //    DELETE FROMProductSpecItem  WHERE product_id = 1 AND productSpecsValue_id = 3
     public void removeSpecValue(ProductSpecsValue value) {
-        for (Iterator<ProductSpecItem> iterator = productSpecItemList.iterator(); iterator.hasNext(); ) {
+        for (Iterator<ProductSpecItem> iterator = productSpecItemList.iterator();
+             iterator.hasNext();
+             ){
             ProductSpecItem prodSpecItem = iterator.next();
             if (prodSpecItem.getProduct().equals(this) && prodSpecItem.getProductSpecsValue().equals(value)) {
                 iterator.remove();
-                prodSpecItem.getProductSpecsValue().getProductSpecItemList().remove(prodSpecItem);
                 prodSpecItem.setProduct(null);
                 prodSpecItem.setProductSpecsValue(null);
                 break;
@@ -153,17 +153,6 @@ public class Product  implements Serializable {
     }
 
 
-    public void removeSpecValueS(ProductSpecsValue value) {
-        productSpecItemList.stream()
-                .filter(prodSpecItem -> prodSpecItem.getProduct().equals(this) && prodSpecItem.getProductSpecsValue().equals(value))
-                .findFirst()
-                .ifPresent(prodSpecItem -> {
-                    productSpecItemList.remove(prodSpecItem);
-                    prodSpecItem.getProductSpecsValue().getProductSpecItemList().remove(prodSpecItem);
-                    prodSpecItem.setProduct(null);
-                    prodSpecItem.setProductSpecsValue(null);
-                });
-    }
 
 
 //    public Product addProductSpecItem(ProductSpecItem productSpecItem){
