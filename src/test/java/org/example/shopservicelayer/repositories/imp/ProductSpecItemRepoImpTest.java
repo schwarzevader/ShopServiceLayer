@@ -1,12 +1,15 @@
 package org.example.shopservicelayer.repositories.imp;
 
+import com.github.dockerjava.api.model.ContainerConfig;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.example.jpatest.ContainerTest;
-import org.example.jpatest.repositories.ProductRepository;
-import org.example.jpatest.repositories.ProductSpecItemRepo;
+
+import org.example.shopservicelayer.ContainersConfig;
+import org.example.shopservicelayer.repositories.ProductRepository;
+import org.example.shopservicelayer.repositories.ProductSpecItemRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,12 +17,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 
-//@SpringBootTest(classes = TestcontainersConfig.class)
-//@AutoConfigureMockMvc(printOnlyOnFailure = false)
-@SpringBootTest
+@AutoConfigureMockMvc(printOnlyOnFailure = false)
 @Slf4j
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,classes = ContainerConfig.class)
+//@SpringBootTest
 @Transactional
-class ProductSpecItemRepoImpTest extends ContainerTest {
+class ProductSpecItemRepoImpTest  {
 
     @Autowired
     ProductSpecItemRepoImp productSpecItemRepoImp;

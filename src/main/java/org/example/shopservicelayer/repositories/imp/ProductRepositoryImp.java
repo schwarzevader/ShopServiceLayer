@@ -21,6 +21,21 @@ import java.util.List;
 //@RequiredArgsConstructor
 public class ProductRepositoryImp {
 
+//    Tag misc = entityManager.unwrap( Session.class )
+//            .bySimpleNaturalId(Tag.class)
+//            .load( "Misc" );
+//
+//    Post post = entityManager.createQuery(
+//                    "select p " +
+//                            "from Post p " +
+//                            "join fetch p.tags pt " +
+//                            "join fetch pt.tag " +
+//                            "where p.id = :postId", Post.class)
+//            .setParameter( "postId", 1L )
+//            .getSingleResult();
+//
+//post.removeTag( misc );
+
     @PersistenceContext
     private EntityManager entityManager;
 
