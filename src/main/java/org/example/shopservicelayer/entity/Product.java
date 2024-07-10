@@ -112,6 +112,24 @@ public class Product  implements Serializable {
 
 
 
+//    public void addTag(Tag tag) {
+//        PostTag postTag = new PostTag(this, tag);
+//        tags.add(postTag);
+//    }
+//
+//    public void removeTag(Tag tag) {
+//        for (Iterator<PostTag> iterator = tags.iterator();
+//             iterator.hasNext(); ) {
+//            PostTag postTag = iterator.next();
+//
+//            if (postTag.getPost().equals(this) &&
+//                    postTag.getTag().equals(tag)) {
+//                iterator.remove();
+//                postTag.setPost(null);
+//                postTag.setTag(null);
+//            }
+//        }
+//    }
 
 
     public void addProductSpecsValue(ProductSpecsValue productSpecsValue) {
@@ -146,6 +164,7 @@ public class Product  implements Serializable {
                     prodSpecItem.setProductSpecsValue(null);
                 });
     }
+
 
 //    public Product addProductSpecItem(ProductSpecItem productSpecItem){
 //        productSpecItemList.add(productSpecItem);
