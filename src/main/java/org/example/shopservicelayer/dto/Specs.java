@@ -43,10 +43,10 @@ public class Specs implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductSpecsNamesDTO{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", values=" + productSpecValues.toString() +
+        return "{" +
+               "id:" + id +
+               ", name:'" + name + '\'' +
+               ", values:" + productSpecValues.toString() +
                '}';
     }
 

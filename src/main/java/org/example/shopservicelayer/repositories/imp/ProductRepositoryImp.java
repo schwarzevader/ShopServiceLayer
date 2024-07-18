@@ -6,9 +6,13 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
+import org.example.shopservicelayer.dto.ProductAndSpecsDto;
+import org.example.shopservicelayer.dto.SpecValue;
+import org.example.shopservicelayer.dto.Specs;
 import org.example.shopservicelayer.entity.Product;
 import org.example.shopservicelayer.entity.ProductSpecsValue;
 import org.example.shopservicelayer.repositories.ProductRepository;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +44,37 @@ public class ProductRepositoryImp {
     private EntityManager entityManager;
 
 
+    public ProductAndSpecsDto getProductAndSpecs(Long id){
+
+//        private Long id;
+//        private String name ;
+//        private double shadowRating;
+//        private double price;
+//        private String description;
+//        private int quantity ;
+//        private Long categoryID;
+//        private List<Specs> specsList;
+        return entityManager.createQuery("""
+                select p.id,
+                p.name,
+                p.shadowRating,
+                p.price,
+                p.description,
+                p.quantity,
+                pc.id  
+                from products p
+                join fetch p.productSpecItemList sv
+                join fetch p.productCategory pc
+                where p.id=:id
+                """,
+                ProductAndSpecsDto.class)
+                .setParameter("id", id).unwrap(Query.class)
+                .setResultTransformer((tuples, aliases) -> {
+                    return new ProductAndSpecsDto((Long) tuples[0],(String) tuples[1],(double)tuples[2],
+                            (double)tuples[3],(String) tuples[4],(int)tuples[5],(Long)tuples[6],
+                            (List<Specs>) List.of());
+                }).getSingleResult();
+    }
 
 
 
@@ -86,7 +121,7 @@ public class ProductRepositoryImp {
             prod.setPrice(product.getPrice());
             prod.setQuantity(product.getQuantity());
             prod.setProductCategory(product.getProductCategory());
-            removeSpecValue.forEach(prod::removeSpecValueS);
+            removeSpecValue.forEach(prod::removeSpecValue);
             addSpecValue.forEach(prod::addProductSpecsValue);
 
 /////////////////////////////////////////////////////////////////////

@@ -60,18 +60,26 @@ public class SpecValue implements Serializable {
 
     }
 
-
-
-
-
     @Override
     public String toString() {
-        return "ProductSpecValueDTO{" +
-               "active=" + checked +
-               ", value='" + specValue + '\'' +
-               ", id=" + id +
-               '}';
+        return "{" +
+                "checked:" + checked +
+                ", specValue:'" + specValue + '\'' +
+                ", specName:'" + specName + '\'' +
+                ", specNameId:" + specNameId +
+                ", id:" + id +
+                '}';
     }
+
+
+//    @Override
+//    public String toString() {
+//        return "{" +
+//               "active:" + checked +
+//               ", value:'" + specValue + '\'' +
+//               ", id:" + id +
+//               '}';
+//    }
 
 
 
