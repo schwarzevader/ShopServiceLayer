@@ -46,7 +46,7 @@ public class CategoryRepositoryImp {
                     System.out.println("0===" + tuples[0]);
                     System.out.println("1===" + tuples[1]);
                     System.out.println("2===" + tuples[2]);
-
+//map category ?
 //                    specsDtoTransformer.specsTransform(specsMap,
 //                            (Long)tuples[2],(String)tuples[3],(Long)tuples[4],(String)tuples[5]);
                     Long categoryId = (Long) tuples[0];
