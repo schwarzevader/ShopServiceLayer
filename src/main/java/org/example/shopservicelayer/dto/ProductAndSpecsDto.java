@@ -13,7 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class ProductAndSpecsDto implements Serializable {
     private Long id;
     private String name ;
@@ -24,16 +24,16 @@ public class ProductAndSpecsDto implements Serializable {
     private Long categoryID;
     private List<Specs> specsList;
 
-//    public ProductAndSpecsDto(Long id, String name, double shadowRating, double price, String description, int quantity, Long categoryID, List<Specs> specsList) {
-//        this.id = id;
-//        this.name = name;
-//        this.shadowRating = shadowRating;
-//        this.price = price;
-//        this.description = description;
-//        this.quantity = quantity;
-//        this.categoryID = categoryID;
-//        this.specsList = specsList;
-//    }
+    public ProductAndSpecsDto(Long id, String name, double shadowRating, double price, String description, int quantity, Long categoryID, List<Specs> specsList) {
+        this.id = id;
+        this.name = name;
+        this.shadowRating = shadowRating;
+        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
+        this.categoryID = categoryID;
+        this.specsList = specsList;
+    }
 
 
     @Override

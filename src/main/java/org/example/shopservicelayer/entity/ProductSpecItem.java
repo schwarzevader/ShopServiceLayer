@@ -73,7 +73,7 @@ public class ProductSpecItem implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductSpecItem{" +
+        return "{" +
                "id=" + id +
                ", product=" + product +
                ", sizeQuantity=" + sizeQuantity +

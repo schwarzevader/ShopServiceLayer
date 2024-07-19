@@ -12,18 +12,21 @@ import org.example.shopservicelayer.dto.Specs;
 import org.example.shopservicelayer.entity.Product;
 import org.example.shopservicelayer.entity.ProductSpecsValue;
 import org.example.shopservicelayer.repositories.ProductRepository;
+import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 //@NoArgsConstructor
 @AllArgsConstructor
 //@RequiredArgsConstructor
-public class ProductRepositoryImp {
+public class ProductRepositoryImp  {
 
 //    Tag misc = entityManager.unwrap( Session.class )
 //            .bySimpleNaturalId(Tag.class)
@@ -44,6 +47,52 @@ public class ProductRepositoryImp {
     private EntityManager entityManager;
 
 
+//             entityManager
+//            .createNativeQuery(
+//                    "SELECT * " +
+//                            "FROM cluster c " +
+//                            "WHERE EXISTS (" +
+//                            "   SELECT ct.cluster_id as c_id " +
+//                            "   FROM cluster_tag ct " +
+//                            "   JOIN tag t ON ct.tag_id = t.id " +
+//                            "   WHERE " +
+//                            "       c.id = ct.cluster_id AND ( " +
+//                            "           (t.tag_name = :tagName1 AND t.tag_value = :tagValue1) OR " +
+//                            "           (t.tag_name = :tagName2 AND t.tag_value = :tagValue2) " +
+//                            "       )" +
+//                            "   GROUP BY ct.cluster_id " +
+//                            "   HAVING COUNT(*) = 2 " +
+//                            ") ", Cluster.class)
+//            .setParameter("tagName1", "Spark")
+//            .setParameter("tagValue1", "2.2")
+//            .setParameter("tagName2", "Hadoop")
+//            .setParameter("tagValue2", "2.7")
+//            .getResultList();
+//
+
+    public Product getProduct(Long id){
+
+//       Product p= session.getReference(Product.class,id);
+//       session.getTransaction().commit();
+//       session.close();
+//       return p;
+//       return session.getReference(Product.class,id);
+//       return session.get(Product.class, id);
+//       return   entityManager.getReference(Product.class,id);
+//       return   entityManager.find(Product.class,id);
+
+        return entityManager.createQuery(
+                        "SELECT p " +
+                                "FROM products p  " +
+                                "JOIN FETCH p.productSpecItemList psi " +
+                                "JOIN FETCH psi.productSpecsValue " +
+                                "JOIN FETCH psi.product " +
+                                "WHERE p.id = :id",
+                        Product.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
     public ProductAndSpecsDto getProductAndSpecs(Long id){
 
 //        private Long id;
@@ -54,26 +103,56 @@ public class ProductRepositoryImp {
 //        private int quantity ;
 //        private Long categoryID;
 //        private List<Specs> specsList;
-        return entityManager.createQuery("""
-                select p.id,
-                p.name,
-                p.shadowRating,
-                p.price,
-                p.description,
-                p.quantity,
-                pc.id  
-                from products p
-                join fetch p.productSpecItemList sv
-                join fetch p.productCategory pc
-                where p.id=:id
-                """,
-                ProductAndSpecsDto.class)
+
+        Map<Long,Specs> specsMap =new HashMap<>();
+        ProductAndSpecsDto productAndSpecsDto = new ProductAndSpecsDto();
+//        return (ProductAndSpecsDto)
+                entityManager.createQuery("""
+                        select  p.id,
+                        p.name,
+                        p.shadowRating,
+                        p.price,
+                        p.description,
+                        p.quantity,
+                        pc.id,
+                        sv.id,
+                        sv.value,
+                        sv.productSpecName.id,
+                        sv.productSpecName.name   
+                        from products p
+                        join  p.productSpecItemList svi
+                        join  svi.productSpecsValue sv
+                        join p.productCategory pc
+                        where p.id=:id
+                        """)
                 .setParameter("id", id).unwrap(Query.class)
                 .setResultTransformer((tuples, aliases) -> {
-                    return new ProductAndSpecsDto((Long) tuples[0],(String) tuples[1],(double)tuples[2],
-                            (double)tuples[3],(String) tuples[4],(int)tuples[5],(Long)tuples[6],
-                            (List<Specs>) List.of());
+                    Long specId = (Long) tuples[9];
+                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[10]))
+                            .getProductSpecValues().add(new SpecValue((Long) tuples[7], (String) tuples[8], specId));
+                    productAndSpecsDto.setId((Long) tuples[0]);
+                    productAndSpecsDto.setName( (String) tuples[1]);
+                    productAndSpecsDto.setShadowRating((double)tuples[2]);
+                    productAndSpecsDto.setPrice( (double)tuples[3]);
+                    productAndSpecsDto.setDescription((String) tuples[4]);
+                    productAndSpecsDto.setQuantity((int)tuples[5]);
+                    productAndSpecsDto.setCategoryID((Long)tuples[6]);
+//                    productAndSpecsDto.setSpecsList(specsMap.values().stream().toList());
+//                    return new ProductAndSpecsDto(
+//                            (Long) tuples[0],
+//                            (String) tuples[1],
+//                            (double)tuples[2],
+//                            (double)tuples[3],
+//                            (String) tuples[4],
+//                            (int)tuples[5],
+//                            (Long)tuples[6],
+//                            (List<Specs>) specsMap.values().stream().toList()
+//
+//                    );
+                    return null;
                 }).getSingleResult();
+        productAndSpecsDto.setSpecsList(specsMap.values().stream().toList());
+        return  productAndSpecsDto;
     }
 
 

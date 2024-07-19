@@ -1,6 +1,7 @@
 package org.example.shopservicelayer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.shopservicelayer.repositories.imp.ProductRepositoryImp;
 import org.example.shopservicelayer.repositories.imp.SpecValueRepoImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +17,8 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 
     @Autowired
     SpecValueRepoImp specValueRepoImp;
+    @Autowired
+    ProductRepositoryImp productRepositoryImp;
 
     public static void main(String[] args) {
         SpringApplication.run(ShopServiceLayerApplication.class, args);
@@ -56,6 +59,10 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 //        System.out.println("---------------------------- getChildrens 1049,1031");
 //        specValueRepoImp.getSpecsParentsAndChildrensValues(List.of(1049L,1031L)).forEach(System.out::println);
 
+//        System.out.println(productRepositoryImp.getProductAndSpecs(1000L).toString());
+//        System.out.println(productRepositoryImp.getProduct(1000L).getProductCategory().getId());
+
+        System.out.println(productRepositoryImp.getProduct(1000L).getProductSpecItemList().toString());
 
     }
 }
