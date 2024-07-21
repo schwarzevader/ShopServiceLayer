@@ -63,7 +63,7 @@ public class SpecValueRepoImp {
                             .getProductSpecValues().add(new SpecValue((Long) tuples[0], (String) tuples[1], specId));
                     return null;
                 }).getResultList();
-        return specsMap.values().stream().toList();
+        return new ArrayList<>(specsMap.values());
     }
 
     public List<Specs> getSpecsChildrensValues(Long id) {
@@ -98,7 +98,7 @@ public class SpecValueRepoImp {
                             .getProductSpecValues().add(new SpecValue((Long) tuples[0], (String) tuples[1], specId));
                     return null;
                 }).getResultList();
-        return specsMap.values().stream().toList();
+        return new ArrayList<>(specsMap.values());
     }
 
     public List<Specs> getSpecsParentsAndChildrensValues(List<Long> id) {
@@ -216,7 +216,7 @@ public class SpecValueRepoImp {
 //                }).getResultList();
 
 
-        return specsMap.values().stream().toList();
+        return new ArrayList<>(specsMap.values());
     }
 
 

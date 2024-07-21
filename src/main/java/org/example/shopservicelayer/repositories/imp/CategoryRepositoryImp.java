@@ -54,79 +54,49 @@ public class CategoryRepositoryImp {
 //                    System.out.println("3===" + tuples[3]);
 //                    System.out.println("4===" + tuples[4]);
 //                    System.out.println("5===" + tuples[5]);
-
-
-                    //////////////////////////////
                     Long categoryId = (Long) tuples[0];
                     Long specId = (Long) tuples[2];
-//                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
-//                            .getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
+                    //////////////////////////////
 
                     Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
                     spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
-
-//                    System.out.println(spec.toString());
-
-//                    List<Specs> specs= specsMap.values().stream().toList();
                     categoriesMap.computeIfAbsent(categoryId,k->
-//                                    new CategoriesAndSpecsDto(categoryId,(String) tuples[1],spec))
                                     new CategoriesAndSpecsDto(categoryId,(String) tuples[1]))
-                            .getSpecsMap().put(spec.getId(),spec);
-//                            .getSpecsList().add(new  Specs(specId, (String) tuples[3]));
+                            .getSpecsMap().putIfAbsent(spec.getId(),spec);
 
-                    ///////////////////////////////
 
-//                    Long categoryId = (Long) tuples[0];
-//                    Long specId = (Long) tuples[2];
-//
-//                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
-//                    spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
-//
-////                    System.out.println(spec.toString());
-////                    System.out.println("int="+i);
-////                    specsMap.values().forEach(System.out::println);
-//                    categoriesMap.computeIfAbsent(categoryId, k ->
-//                                    new CategoriesAndSpecsDto(categoryId, (String) tuples[1]))
-//                            .getSpecsList().add(spec);
-
-//                    i++;
 /////////////////////////////////////////
 
-//                    Long categoryId = (Long) tuples[0];
-//                    Long specId = (Long) tuples[2];
+
 //                    Long specValueId = (Long) tuples[4];
-//
 //                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
 //                    spec.getProductSpecValues().add(new SpecValue(specValueId, (String) tuples[5], specId));
-//
 //                    CategoriesAndSpecsDto category =
 //                            categoriesMap.computeIfAbsent(categoryId, k -> new CategoriesAndSpecsDto(categoryId, (String) tuples[1]))
 //                            ;
 //                    if (!category.getSpecsList().contains(spec)) {
-//
 //                        category.getSpecsList().add(spec);
 //                    }
 
+                    /////////////////////////////////////
                     return null;
                 }).getResultList();
 
-//        categoriesMap.values().forEach(category -> {
-//            List<Specs> uniqueSpecs = category.getSpecsList().stream()
-//                    .distinct()
-//                    .collect(Collectors.toList());
-//            category.setSpecsList(uniqueSpecs);
-//        });
+
 ///////////////////////////////
+
         categoriesMap.values().forEach(c->{
-//            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
-            c.setSpecsList(c.getSpecsMap().values().stream().toList());
+            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
         });
 
         stopWatch.stop();
         System.out.println("time="+stopWatch.getTotalTimeMillis());
 
-        return categoriesMap.values().stream().toList();
+//        return categoriesMap.values().stream().toList();
+        return new ArrayList<>(categoriesMap.values());
     }
+
+
 //
 //    @Autowired
 //    private ProductCategoryRepo crudCategory;

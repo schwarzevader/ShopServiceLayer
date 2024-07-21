@@ -13,10 +13,11 @@ public class SpecsDtoTransformerImp implements SpecsDtoTransformer {
 
     @Override
 //    public void specsTransform(Map<Long, Specs>specsMap,Object... tuples){
-    public List<Specs> specsTransform(Map<Long, Specs> specsMap, Object... tuples){
+    public Specs specsTransform(Map<Long, Specs> specsMap, Object... tuples){
         Long specId = (Long) tuples[0];
-        specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[1]))
-                .getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specId));
-        return specsMap.values().stream().toList();
+        Specs s=  specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[1]));
+        s.getProductSpecValues().add(new SpecValue((Long) tuples[2], (String) tuples[3], specId));
+        return s;
+
     }
 }

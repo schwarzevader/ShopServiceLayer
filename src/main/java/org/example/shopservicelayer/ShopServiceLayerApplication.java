@@ -72,7 +72,9 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 //        categoryRepositoryImp.getAllCategories().forEach(System.out::println);
 //        categoryRepositoryImp.getAllCategories();
 //        System.out.println(categoryRepositoryImp.getAllCategories().stream().filter(k-> k.getId().equals(1000L)).toString());
-        categoryRepositoryImp.getAllCategories().stream().filter(k-> k.getId().equals(2000L)).forEach(System.out::println);
+//        categoryRepositoryImp.getAllCategories().stream().filter(k-> k.getId().equals(2000L)).forEach(System.out::println);
+
+        categoryRepositoryImp.getAllCategories().forEach(System.out::println);
 
     }
 }

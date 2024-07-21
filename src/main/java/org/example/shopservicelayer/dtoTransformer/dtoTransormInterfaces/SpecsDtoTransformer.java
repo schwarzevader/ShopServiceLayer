@@ -7,6 +7,5 @@ import java.util.Map;
 
 public interface SpecsDtoTransformer {
 //    void specsTransform(Map<Long, Specs> specsMap, Object... tuples);
-
-    List<Specs> specsTransform(Map<Long, Specs> specsMap, Object... tuples);
+    Specs specsTransform(Map<Long, Specs> specsMap, Object... tuples);
 }
