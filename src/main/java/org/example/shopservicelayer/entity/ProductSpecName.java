@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "product_spec_name")
-
 @Getter
 @Setter
 @AllArgsConstructor

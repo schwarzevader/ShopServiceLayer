@@ -1,6 +1,7 @@
 package org.example.shopservicelayer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.shopservicelayer.repositories.imp.CategoryRepositoryImp;
 import org.example.shopservicelayer.repositories.imp.ProductRepositoryImp;
 import org.example.shopservicelayer.repositories.imp.SpecValueRepoImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
     SpecValueRepoImp specValueRepoImp;
     @Autowired
     ProductRepositoryImp productRepositoryImp;
+
+    @Autowired
+    CategoryRepositoryImp categoryRepositoryImp;
 
     public static void main(String[] args) {
         SpringApplication.run(ShopServiceLayerApplication.class, args);
@@ -62,7 +66,13 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 //        System.out.println(productRepositoryImp.getProductAndSpecs(1000L).toString());
 //        System.out.println(productRepositoryImp.getProduct(1000L).getProductCategory().getId());
 
-        System.out.println(productRepositoryImp.getProduct(1000L).getProductSpecItemList().toString());
+//        System.out.println(productRepositoryImp.getProduct(1000L).getProductSpecItemList().toString());
+
+//        categoryRepositoryImp.getAllCategories().forEach(c-> System.out.println(c.getId()));
+//        categoryRepositoryImp.getAllCategories().forEach(System.out::println);
+//        categoryRepositoryImp.getAllCategories();
+//        System.out.println(categoryRepositoryImp.getAllCategories().stream().filter(k-> k.getId().equals(1000L)).toString());
+        categoryRepositoryImp.getAllCategories().stream().filter(k-> k.getId().equals(2000L)).forEach(System.out::println);
 
     }
 }

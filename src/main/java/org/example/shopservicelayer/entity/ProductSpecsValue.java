@@ -14,7 +14,6 @@ import java.util.*;
 
 
 @Entity(name = "productSpecValue")
-
 @Getter
 @Setter
 @AllArgsConstructor

@@ -6,18 +6,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class CategoriesAndSpecsDto implements Serializable {
     private Long id;
     private String name;
     private List<Specs> specsList = new ArrayList<>();
+    private Map<Long,Specs> specsMap = new HashMap<>();
+
+    public CategoriesAndSpecsDto(Long id, String name, Specs specs) {
+        this.id = id;
+        this.name = name;
+        specsMap.put(specs.getId(),specs);
+//        specsMap.computeIfAbsent(specs.getId(),k->
+//            new Specs(specs.getId(),specs.getName())).s;
+    }
+
+
 
     public CategoriesAndSpecsDto(Long id, String name) {
         this.id = id;
@@ -39,7 +48,7 @@ public class CategoriesAndSpecsDto implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
+        return "---------------------------{" +
                 "id:" + id +
                 ", name:'" + name + '\'' +
                 ", specsList:" + specsList.toString() +
