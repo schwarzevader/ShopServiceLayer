@@ -10,6 +10,7 @@ import org.example.shopservicelayer.dto.CategoriesAndSpecsDto;
 import org.example.shopservicelayer.dto.SpecValue;
 import org.example.shopservicelayer.dto.Specs;
 import org.example.shopservicelayer.dtoTransformer.dtoTransormInterfaces.SpecsDtoTransformer;
+import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
@@ -32,7 +33,7 @@ public class CategoryRepositoryImp {
     private SpecsDtoTransformer specsDtoTransformer;
 
 
-    public List<CategoriesAndSpecsDto> getAllCategories(){
+    public List<CategoriesAndSpecsDto> getAllCategories(boolean cacheable){
         stopWatch.start();
         Map<Long, Specs> specsMap = new HashMap<>();
         Map<Long, CategoriesAndSpecsDto> categoriesMap = new HashMap<>();
@@ -46,6 +47,7 @@ public class CategoryRepositoryImp {
                         "join c.productSpecNames sn " +
                         "join sn.productSpecValues sv")
                 .unwrap(Query.class)
+                .setHint(QueryHints.HINT_CACHEABLE, cacheable)
                 .setResultTransformer((tuples, aliases) -> {
 //                    System.out.println("--------------------------------");
 //                    System.out.println("0===" + tuples[0]);
@@ -58,25 +60,23 @@ public class CategoryRepositoryImp {
                     Long specId = (Long) tuples[2];
                     //////////////////////////////
 
-                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
-                    spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
-                    categoriesMap.computeIfAbsent(categoryId,k->
-                                    new CategoriesAndSpecsDto(categoryId,(String) tuples[1]))
-                            .getSpecsMap().putIfAbsent(spec.getId(),spec);
-
+//                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
+//                    spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
+//                    categoriesMap.computeIfAbsent(categoryId,k->
+//                                    new CategoriesAndSpecsDto(categoryId,(String) tuples[1]))
+//                            .getSpecsMap().putIfAbsent(spec.getId(),spec);
 
 /////////////////////////////////////////
 
 
-//                    Long specValueId = (Long) tuples[4];
-//                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
-//                    spec.getProductSpecValues().add(new SpecValue(specValueId, (String) tuples[5], specId));
-//                    CategoriesAndSpecsDto category =
-//                            categoriesMap.computeIfAbsent(categoryId, k -> new CategoriesAndSpecsDto(categoryId, (String) tuples[1]))
-//                            ;
-//                    if (!category.getSpecsList().contains(spec)) {
-//                        category.getSpecsList().add(spec);
-//                    }
+
+                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
+                    spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
+                    CategoriesAndSpecsDto category =
+                            categoriesMap.computeIfAbsent(categoryId, k -> new CategoriesAndSpecsDto(categoryId, (String) tuples[1]));
+                    if (!category.getSpecsList().contains(spec)) {
+                        category.getSpecsList().add(spec);
+                    }
 
                     /////////////////////////////////////
                     return null;
@@ -85,9 +85,9 @@ public class CategoryRepositoryImp {
 
 ///////////////////////////////
 
-        categoriesMap.values().forEach(c->{
-            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
-        });
+//        categoriesMap.values().forEach(c->{
+//            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
+//        });
 
         stopWatch.stop();
         System.out.println("time="+stopWatch.getTotalTimeMillis());
