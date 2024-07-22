@@ -2,21 +2,27 @@ port: 8080
 spring:
   jpa:
     show-sql: true
+
     #    format_sql: true
     hibernate:
-      cache:
-        use_second_level_cache: true
-        use_query_cache: true
-        region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory # Используйте провайдер кэша, например, JCache (JSR 107)
-
-
-      ddl-auto: update
-#      ddl-auto: create
-        #      ddl-auto: none
-        #      ddl-auto: create-drop
-#      dialect: org.hibernate.dialect.PostgreSQLDialect
-      dialect: org.hibernate.dialect.MySQL8Dialect
-      format_sql: true
+     ddl-auto: update
+        #      ddl-auto: create
+      #      ddl-auto: none
+      #      ddl-auto: create-drop
+      #      dialect: org.hibernate.dialect.PostgreSQLDialect
+#    dialect: org.hibernate.dialect.MySQL8Dialect
+#    format_sql: true
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+            javax:
+              cache:
+                provider: org.ehcache.jsr107.EhcacheCachingProvider
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
   #    properties:
   #      hibernate.jdbc.batch_size: 20
   #      hibernate.cache.use_query_cache: false
@@ -25,10 +31,10 @@ spring:
   #      hibernate.cache.use_minimal_puts: false
   datasource:
     url: jdbc:mysql://localhost:3306/shopV1
-#    url: jdbc:mysql://localhost:3306/shopTest
+    #    url: jdbc:mysql://localhost:3306/shopTest
     username: root
-#    url: jdbc:postgresql://localhost:5432/productsT
-#    username: postgres
+    #    url: jdbc:postgresql://localhost:5432/productsT
+    #    username: postgres
 
     password: 0510208486q
 #  sql:

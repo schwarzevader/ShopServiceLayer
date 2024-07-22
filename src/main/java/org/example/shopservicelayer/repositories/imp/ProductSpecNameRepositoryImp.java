@@ -82,8 +82,8 @@ public class ProductSpecNameRepositoryImp {
                 .setParameter("value", categoryId)
 //                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .unwrap(Query.class)
-//                .setTupleTransformer((tuples, aliases) -> {
-                .setResultTransformer((tuples, aliases) -> {
+                .setTupleTransformer((tuples, aliases) -> {
+//                .setResultTransformer((tuples, aliases) -> {
                     SpecKey tempSpec = new SpecKey((long) tuples[0], (String) tuples[1]);
                     if (specsListMap.containsKey(tempSpec)) {
 //                        specsListMap.get(tempSpec).add(new SpecValue((String) tuples[2], (Long) tuples[3], (String) tuples[1]));

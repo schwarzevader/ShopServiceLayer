@@ -139,7 +139,7 @@ public class SpecValueRepoImp {
                                 "svch.svh.productSpecName.name " +
                                 "FROM specValueChildrenHierarchy svch")
                 .setParameter("id", id).unwrap(Query.class)
-                .setResultTransformer((tuples, aliases) -> {
+                .setTupleTransformer((tuples, aliases) -> {
                     System.out.println("--------------------------------");
                     System.out.println("0===" + tuples[0]);
                     System.out.println("1===" + tuples[1]);

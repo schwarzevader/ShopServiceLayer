@@ -45,10 +45,11 @@ public class CategoryRepositoryImp {
                         "sv.id,sv.value " +
                         "from product_category c " +
                         "join c.productSpecNames sn " +
-                        "join sn.productSpecValues sv")
+                        "join sn.productSpecValues sv",CategoriesAndSpecsDto.class)
                 .unwrap(Query.class)
+//                .setMaxResults(1000)
                 .setHint(QueryHints.HINT_CACHEABLE, cacheable)
-                .setResultTransformer((tuples, aliases) -> {
+                .setTupleTransformer((tuples, aliases) -> {
 //                    System.out.println("--------------------------------");
 //                    System.out.println("0===" + tuples[0]);
 //                    System.out.println("1===" + tuples[1]);

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ import java.util.List;
 //        resolver =EntityIdResolver.class
 //)
 
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProductCategory implements Serializable {
 
     @Id
@@ -63,6 +66,7 @@ public class ProductCategory implements Serializable {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 //    @JoinColumn(name = "product_category_id")
     private List<ProductSpecName> productSpecNames = new ArrayList<>();
 

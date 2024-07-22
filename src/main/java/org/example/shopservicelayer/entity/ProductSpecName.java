@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NaturalId;
 
 import java.io.Serializable;
@@ -31,6 +32,9 @@ import java.util.Objects;
 )
 //@Table(schema = "public" ,name = "product_spec_names")
 //@NaturalIdCache
+
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProductSpecName implements Serializable {
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +55,7 @@ public class ProductSpecName implements Serializable {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<ProductSpecsValue> productSpecValues =new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

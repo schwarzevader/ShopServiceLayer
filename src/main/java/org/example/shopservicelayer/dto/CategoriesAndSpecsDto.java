@@ -1,9 +1,11 @@
 package org.example.shopservicelayer.dto;
 
+import jakarta.persistence.Cacheable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
 import java.util.*;
@@ -11,7 +13,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CategoriesAndSpecsDto implements Serializable {
     private Long id;
     private String name;
