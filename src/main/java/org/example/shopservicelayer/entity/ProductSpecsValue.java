@@ -2,10 +2,7 @@ package org.example.shopservicelayer.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -19,6 +16,7 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+
 @Table(name = "product_spec_value")
 @NamedEntityGraph(
         name = "ProductSpecsValue")
@@ -36,8 +34,7 @@ public class ProductSpecsValue implements Serializable {
     private String value;
 
 
-
-//    @Id
+    //    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_spec_name_id")
 //    @JoinColumn(name = "spec_name",
@@ -56,6 +53,8 @@ public class ProductSpecsValue implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private Set<ProductSpecsValue> childrens = new HashSet<>();
 
+
+
     public void addParent(ProductSpecsValue parent) {
 //        if (!this.parents.isEmpty()) {
 //            throw new IllegalArgumentException();
@@ -65,7 +64,17 @@ public class ProductSpecsValue implements Serializable {
 
     }
 
-
+//    public ProductSpecsValue() {
+//    }
+//
+//    public ProductSpecsValue(Long valueId, String value, Set<ProductSpecsValue> parents,
+//                             ProductSpecName productSpecName, Set<ProductSpecsValue> childrens) {
+//        this.valueId = valueId;
+//        this.value = value;
+//        this.parents = parents;
+//        this.productSpecName = productSpecName;
+//        this.childrens = childrens;
+//    }
 
 
     ////////////////////////////////////////
@@ -105,7 +114,6 @@ public class ProductSpecsValue implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -122,8 +130,6 @@ public class ProductSpecsValue implements Serializable {
     public int hashCode() {
         return Objects.hash(valueId);
     }
-
-
 
 
 }

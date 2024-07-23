@@ -1,9 +1,9 @@
-port: 8080
+server:
+  port: 8080
+
 spring:
   jpa:
     show-sql: true
-
-    #    format_sql: true
     hibernate:
      ddl-auto: update
         #      ddl-auto: create
@@ -11,16 +11,18 @@ spring:
       #      ddl-auto: create-drop
       #      dialect: org.hibernate.dialect.PostgreSQLDialect
 #    dialect: org.hibernate.dialect.MySQL8Dialect
-#    format_sql: true
     properties:
       hibernate:
         cache:
           use_second_level_cache: true
           region:
             factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+#            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
             javax:
               cache:
                 provider: org.ehcache.jsr107.EhcacheCachingProvider
+                uri: /ehcache.xml
+
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
   #    properties:

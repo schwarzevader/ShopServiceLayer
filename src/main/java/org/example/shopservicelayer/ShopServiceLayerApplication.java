@@ -76,9 +76,9 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 
 //        categoryRepositoryImp.getAllCategories(true).forEach(System.out::println);
 
-        categoryRepositoryImp.getAllCategories(true);
-        categoryRepositoryImp.getAllCategories(true);
-        categoryRepositoryImp.getAllCategories(true);
+//        categoryRepositoryImp.getAllCategories(true);
+//        categoryRepositoryImp.getAllCategories(true);
+//        categoryRepositoryImp.getAllCategories(true);
 
     }
 }

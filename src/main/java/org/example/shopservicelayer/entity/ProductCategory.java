@@ -1,24 +1,24 @@
 package org.example.shopservicelayer.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "product_category")
 @Table(name = "product_categories")
 //@Table(schema = "public", name = "product_categories")
 @Getter
 @Setter
+
 @NoArgsConstructor
-@AllArgsConstructor
 //@AllArgsConstructor
+//@RequiredArgsConstructor
+
 //@RequiredArgsConstructor
 //@JsonIdentityInfo(
 //        generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -41,9 +41,11 @@ public class ProductCategory implements Serializable {
     private String nameOfCategory;
     private long sortValue;
 
-    public ProductCategory(String nameOfCategory) {
-        this.nameOfCategory = nameOfCategory;
-    }
+
+
+//    public ProductCategory(String nameOfCategory) {
+//        this.nameOfCategory = nameOfCategory;
+//    }
 
 
 
@@ -73,4 +75,19 @@ public class ProductCategory implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_type_id")
     private ProductType productType;
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductCategory that = (ProductCategory) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

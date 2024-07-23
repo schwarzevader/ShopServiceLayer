@@ -1,10 +1,7 @@
 package org.example.shopservicelayer.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NaturalId;
 
@@ -16,8 +13,9 @@ import java.util.Objects;
 @Entity(name = "product_spec_name")
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
+//@RequiredArgsConstructor
 @Table(name = "product_spec_names")
 @NamedEntityGraph(
         name = "ProductSpecName.productSpecValues",
@@ -70,8 +68,24 @@ public class ProductSpecName implements Serializable {
 //    private List<ProductSpecNameItem> productSpecNameItems = new ArrayList<>();
 
 
+//    public ProductSpecName() {
+//    }
+//
+//    public ProductSpecName(Long id, String name, long sortValue, List<ProductSpecsValue> productSpecValues, ProductCategory productCategory) {
+//        this.id = id;
+//        this.name = name;
+//        this.sortValue = sortValue;
+//        this.productSpecValues = productSpecValues;
+//        this.productCategory = productCategory;
+//    }
 
-    
+//    public ProductSpecName(Object o, Object o1, Object o2, Object o3, Object o4) {
+//        this.id = (Long) o;
+//        this.name = (String) o1;
+//        this.sortValue = (long)o2;
+//        this.productSpecValues = (List<ProductSpecsValue>) o3;
+//        this.productCategory = (ProductCategory) o4;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -84,5 +98,16 @@ public class ProductSpecName implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductSpecName{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sortValue=" + sortValue +
+                ", productSpecValues=" + productSpecValues.toString() +
+                ", productCategory=" + productCategory.toString() +
+                '}';
     }
 }
