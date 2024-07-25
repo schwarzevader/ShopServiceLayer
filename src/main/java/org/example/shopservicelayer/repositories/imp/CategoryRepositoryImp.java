@@ -3,7 +3,6 @@ package org.example.shopservicelayer.repositories.imp;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Tuple;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -12,25 +11,17 @@ import org.example.shopservicelayer.dto.SpecValue;
 import org.example.shopservicelayer.dto.Specs;
 import org.example.shopservicelayer.dtoTransformer.dtoTransormInterfaces.SpecsDtoTransformer;
 import org.example.shopservicelayer.entity.ProductCategory;
-import org.example.shopservicelayer.entity.ProductSpecName;
+import org.example.shopservicelayer.util.EntityGraphBuilder;
+import org.example.shopservicelayer.util.ClassId;
 import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
-import org.jooq.*;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
 
 import org.example.shopservicelayer.entity.ProductSpecsValue;
-
-import org.jooq.impl.DSL;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.jooq.impl.DSL.*;
 
 @Service
 @Transactional
@@ -106,8 +97,9 @@ public class CategoryRepositoryImp {
                         "join c.productSpecNames sn " +
                         "join sn.productSpecValues sv")
                 .unwrap(Query.class)
+
 //                .setMaxResults(1000)
-//                .setHint(QueryHints.HINT_CACHEABLE, cacheable)
+                .setHint(QueryHints.HINT_CACHEABLE, cacheable)
                 .setTupleTransformer((tuples, aliases) -> {
 //                    System.out.println("--------------------------------");
 //                    System.out.println("0===" + tuples[0]);
@@ -154,6 +146,75 @@ public class CategoryRepositoryImp {
 //        return categoriesMap.values().stream().toList();
         return new ArrayList<>(categoriesMap.values());
     }
+
+
+
+    public List<CategoriesAndSpecsDto> getAllCategories() {
+        stopWatch.start();
+        Map<Long, Specs> specsMap = new HashMap<>();
+        Map<Long, CategoriesAndSpecsDto> categoriesMap = new HashMap<>();
+        Set<Specs> specsSet = new HashSet<>();
+
+        this.entityManager.createQuery("select new org.example.shopservicelayer.dto.CategoriesAndSpecsDto(" +
+                        "c.id,c.nameOfCategory  " +
+                        ") " +
+                        "from product_category c "
+
+                      ,CategoriesAndSpecsDto.class )
+
+
+//                .setMaxResults(1000)
+                .setHint(QueryHints.HINT_CACHEABLE, true)
+                .getResultList();
+
+
+///////////////////////////////
+
+//        categoriesMap.values().forEach(c->{
+//            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
+//        });
+
+        stopWatch.stop();
+        System.out.println("time=" + stopWatch.getTotalTimeMillis());
+
+//        return categoriesMap.values().stream().toList();
+        return new ArrayList<>(categoriesMap.values());
+    }
+
+
+    public List<ProductCategory> getProductCategories(boolean cacheable) {
+
+        List<ProductSpecsValue> productSpecsValues = this.entityManager.createQuery(
+                "select sv " +
+                        "from productSpecValue sv " +
+                        "inner join fetch sv.productSpecName sn " +
+                        "inner join fetch sn.productCategory pc ")
+                .getResultList();
+
+
+
+
+        return transformFromValueToCategory(productSpecsValues,1L);
+    }
+
+    private  List<ProductCategory> transformFromValueToCategory(List<ProductSpecsValue> productSpecsValues ,Long categoryId){
+        EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(
+
+
+        ).build(productSpecsValues);
+
+        ClassId<ProductCategory> categoryClassId = new ClassId<ProductCategory>(
+                ProductCategory.class,
+                categoryId
+        );
+
+        ProductCategory forest = entityGraphBuilder.getEntityContext().getObject(
+               categoryClassId
+        );
+
+        return null;
+    }
+
 
 
     public List<ProductCategory> getCategories(boolean cacheable) {

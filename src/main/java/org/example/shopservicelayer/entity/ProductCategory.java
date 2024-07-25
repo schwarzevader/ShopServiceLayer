@@ -26,9 +26,22 @@ import java.util.Objects;
 //        resolver =EntityIdResolver.class
 //)
 
+@NamedEntityGraph(
+        name = "ProductCategory.productSpecNames",
+        attributeNodes = @NamedAttributeNode("productSpecNames")
+        ,subgraphs = {
+        @NamedSubgraph(name="subjectListGraph",
+                attributeNodes = {
+                        @NamedAttributeNode(value="productSpecNames")
+                }
+        )
+}
+)
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProductCategory implements Serializable {
+
+
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)

@@ -29,7 +29,11 @@ public class CategoriesAndSpecsDto implements Serializable {
 //            new Specs(specs.getId(),specs.getName())).s;
     }
 
-
+    public CategoriesAndSpecsDto(Long id, String name, List<Specs> specsList) {
+        this.id = id;
+        this.name = name;
+        this.specsList = specsList;
+    }
 
     public CategoriesAndSpecsDto(Long id, String name) {
         this.id = id;

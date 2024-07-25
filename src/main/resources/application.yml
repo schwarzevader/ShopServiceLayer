@@ -15,13 +15,16 @@ spring:
       hibernate:
         cache:
           use_second_level_cache: true
+          use_reference_entries : true
           region:
             factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+#            factory_class: org.hibernate.cache.internal.StandardQueryCache
 #            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
             javax:
               cache:
                 provider: org.ehcache.jsr107.EhcacheCachingProvider
                 uri: classpath:jcache.xml
+          use_query_cache: true
 
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
