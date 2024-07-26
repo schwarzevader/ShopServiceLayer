@@ -3,6 +3,8 @@ package org.example.shopservicelayer.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.shopservicelayer.util.EntityVisitor;
+import org.example.shopservicelayer.util.Identifiable;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -22,7 +24,25 @@ import java.util.*;
         name = "ProductSpecsValue")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProductSpecsValue implements Serializable {
+public class ProductSpecsValue implements Serializable ,Identifiable {
+
+    public static EntityVisitor<ProductSpecsValue, ProductSpecName> ENTITY_VISITOR = new EntityVisitor<ProductSpecsValue, ProductSpecName>(ProductSpecsValue.class) {
+
+        @Override
+        public ProductSpecName getParent(ProductSpecsValue visitingObject) {
+            return visitingObject.getProductSpecName();
+        }
+
+        @Override
+        public List<ProductSpecsValue> getChildren(ProductSpecName parent) {
+            return parent.getProductSpecValues();
+        }
+
+        @Override
+        public void setChildren(ProductSpecName parent) {
+            parent.setProductSpecValues(new ArrayList<ProductSpecsValue>());
+        }
+    };
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -132,4 +152,8 @@ public class ProductSpecsValue implements Serializable {
     }
 
 
+    @Override
+    public Long getId() {
+        return valueId;
+    }
 }

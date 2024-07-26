@@ -11,8 +11,11 @@ import org.example.shopservicelayer.dto.SpecValue;
 import org.example.shopservicelayer.dto.Specs;
 import org.example.shopservicelayer.dtoTransformer.dtoTransormInterfaces.SpecsDtoTransformer;
 import org.example.shopservicelayer.entity.ProductCategory;
+import org.example.shopservicelayer.entity.ProductSpecName;
+import org.example.shopservicelayer.entity.ProductType;
 import org.example.shopservicelayer.util.EntityGraphBuilder;
 import org.example.shopservicelayer.util.ClassId;
+import org.example.shopservicelayer.util.EntityVisitor;
 import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 
@@ -182,13 +185,15 @@ public class CategoryRepositoryImp {
     }
 
 
-    public List<ProductCategory> getProductCategories(boolean cacheable) {
+    public List<ProductType> getProductCategories(boolean cacheable) {
 
         List<ProductSpecsValue> productSpecsValues = this.entityManager.createQuery(
                 "select sv " +
                         "from productSpecValue sv " +
                         "inner join fetch sv.productSpecName sn " +
-                        "inner join fetch sn.productCategory pc ")
+                        "inner join fetch sn.productCategory pc " +
+                        "inner join fetch pc.productType pt"
+                )
                 .getResultList();
 
 
@@ -197,19 +202,24 @@ public class CategoryRepositoryImp {
         return transformFromValueToCategory(productSpecsValues,1L);
     }
 
-    private  List<ProductCategory> transformFromValueToCategory(List<ProductSpecsValue> productSpecsValues ,Long categoryId){
+
+    private  List<ProductType> transformFromValueToCategory(List<ProductSpecsValue> productSpecsValues , Long categoryId){
         EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(
-
-
+                new EntityVisitor[] {
+                ProductSpecsValue.ENTITY_VISITOR,
+                ProductSpecName.ENTITY_VISITOR,
+                ProductCategory.ENTITY_VISITOR,
+                ProductType.ENTITY_VISITOR
+                }
         ).build(productSpecsValues);
 
-        ClassId<ProductCategory> categoryClassId = new ClassId<ProductCategory>(
-                ProductCategory.class,
+        ClassId<ProductType> productTypeClassId = new ClassId<ProductType>(
+                ProductType.class,
                 categoryId
         );
 
-        ProductCategory forest = entityGraphBuilder.getEntityContext().getObject(
-               categoryClassId
+        ProductType productType = entityGraphBuilder.getEntityContext().getObject(
+               productTypeClassId
         );
 
         return null;

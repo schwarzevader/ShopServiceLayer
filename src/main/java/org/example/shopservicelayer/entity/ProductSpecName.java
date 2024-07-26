@@ -2,6 +2,8 @@ package org.example.shopservicelayer.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.shopservicelayer.util.EntityVisitor;
+import org.example.shopservicelayer.util.Identifiable;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NaturalId;
 
@@ -33,7 +35,26 @@ import java.util.Objects;
 
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProductSpecName implements Serializable {
+public class ProductSpecName implements Serializable, Identifiable {
+
+    public static EntityVisitor<ProductSpecName, ProductCategory> ENTITY_VISITOR = new EntityVisitor<ProductSpecName, ProductCategory>(ProductSpecName.class) {
+        @Override
+        public ProductCategory getParent(ProductSpecName visitingObject) {
+            return visitingObject.getProductCategory();
+        }
+
+        @Override
+        public List<ProductSpecName> getChildren(ProductCategory parent) {
+            return parent.getProductSpecNames();
+        }
+
+        @Override
+        public void setChildren(ProductCategory parent) {
+            parent.setProductSpecNames(new ArrayList<ProductSpecName>());
+        }
+    };
+
+
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

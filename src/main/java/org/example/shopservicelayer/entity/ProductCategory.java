@@ -2,6 +2,8 @@ package org.example.shopservicelayer.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.shopservicelayer.util.EntityVisitor;
+import org.example.shopservicelayer.util.Identifiable;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;
@@ -39,7 +41,26 @@ import java.util.Objects;
 )
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ProductCategory implements Serializable {
+public class ProductCategory implements Serializable , Identifiable {
+
+
+    public static EntityVisitor<ProductCategory, ProductType> ENTITY_VISITOR = new EntityVisitor<ProductCategory, ProductType>(ProductCategory.class) {
+
+        @Override
+        public ProductType getParent(ProductCategory visitingObject) {
+            return visitingObject.getProductType();
+        }
+
+        @Override
+        public List<ProductCategory> getChildren(ProductType parent) {
+            return parent.getProductCategoryList();
+        }
+
+        @Override
+        public void setChildren(ProductType parent) {
+            parent.setProductCategoryList(new ArrayList<ProductCategory>());
+        }
+    };
 
 
 
