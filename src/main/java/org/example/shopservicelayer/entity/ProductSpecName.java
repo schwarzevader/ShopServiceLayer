@@ -128,7 +128,7 @@ public class ProductSpecName implements Serializable, Identifiable {
                 ", name='" + name + '\'' +
                 ", sortValue=" + sortValue +
                 ", productSpecValues=" + productSpecValues.toString() +
-                ", productCategory=" + productCategory.toString() +
+//                ", productCategory=" + productCategory.toString() +
                 '}';
     }
 }

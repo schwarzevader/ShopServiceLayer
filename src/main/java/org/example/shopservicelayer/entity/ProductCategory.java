@@ -124,4 +124,17 @@ public class ProductCategory implements Serializable , Identifiable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+
+    @Override
+    public String toString() {
+        return "ProductCategory{" +
+                "id=" + id +
+                ", nameOfCategory='" + nameOfCategory + '\'' +
+                ", sortValue=" + sortValue +
+//                ", categoryItems=" + categoryItems +
+                ", productSpecNames=" + productSpecNames.toString() +
+//                ", productType=" + productType +
+                '}';
+    }
 }

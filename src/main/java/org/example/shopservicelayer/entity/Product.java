@@ -18,6 +18,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+
 @Entity(name = "products")
 @Getter
 @Setter
@@ -83,14 +88,22 @@ public class Product  implements Serializable {
 
 
 
+//    @Override
+//    public String toString() {
+//        return "Product{" +
+//                "name='" + name + '\'' +
+//                ", price=" + price +
+//                '}';
+//    }
+
+
     @Override
     public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                '}';
+        ToStringBuilder tsb = new ToStringBuilder(this);
+        tsb.append("id", id);
+        tsb.append("price", getPrice());
+        return tsb.toString();
     }
-
 
 
     @Override

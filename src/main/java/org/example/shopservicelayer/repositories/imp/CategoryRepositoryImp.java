@@ -185,45 +185,7 @@ public class CategoryRepositoryImp {
     }
 
 
-    public List<ProductType> getProductCategories(boolean cacheable) {
 
-        List<ProductSpecsValue> productSpecsValues = this.entityManager.createQuery(
-                "select sv " +
-                        "from productSpecValue sv " +
-                        "inner join fetch sv.productSpecName sn " +
-                        "inner join fetch sn.productCategory pc " +
-                        "inner join fetch pc.productType pt"
-                )
-                .getResultList();
-
-
-
-
-        return transformFromValueToCategory(productSpecsValues,1L);
-    }
-
-
-    private  List<ProductType> transformFromValueToCategory(List<ProductSpecsValue> productSpecsValues , Long categoryId){
-        EntityGraphBuilder entityGraphBuilder = new EntityGraphBuilder(
-                new EntityVisitor[] {
-                ProductSpecsValue.ENTITY_VISITOR,
-                ProductSpecName.ENTITY_VISITOR,
-                ProductCategory.ENTITY_VISITOR,
-                ProductType.ENTITY_VISITOR
-                }
-        ).build(productSpecsValues);
-
-        ClassId<ProductType> productTypeClassId = new ClassId<ProductType>(
-                ProductType.class,
-                categoryId
-        );
-
-        ProductType productType = entityGraphBuilder.getEntityContext().getObject(
-               productTypeClassId
-        );
-
-        return null;
-    }
 
 
 

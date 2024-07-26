@@ -127,12 +127,11 @@ public class ProductSpecsValue implements Serializable ,Identifiable {
 
     @Override
     public String toString() {
-        return "ProductCharacteristic{" +
-                '\'' +
+        return "ProductSpecsValue{" +
+                "valueId=" + valueId +
                 ", value='" + value + '\'' +
                 '}';
     }
-
 
     @Override
     public boolean equals(Object o) {

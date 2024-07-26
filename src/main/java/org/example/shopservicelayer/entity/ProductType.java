@@ -11,6 +11,7 @@ import org.example.shopservicelayer.util.Identifiable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -43,5 +44,26 @@ public class ProductType implements Serializable, Identifiable {
         this.getProductCategoryList().add(productCategory);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductType that = (ProductType) o;
+        return Objects.equals(id, that.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductType{" +
+                "id=" + id +
+                ", sortValue=" + sortValue +
+                ", value='" + value + '\'' +
+                ", productCategoryList=" + productCategoryList.toString() +
+                '}';
+    }
 }
