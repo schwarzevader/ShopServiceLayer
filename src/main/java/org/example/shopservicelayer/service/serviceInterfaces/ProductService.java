@@ -1,4 +1,4 @@
-package org.example.shopservicelayer.service.serviceInterface;
+package org.example.shopservicelayer.service.serviceInterfaces;
 
 
 

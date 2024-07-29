@@ -1,9 +1,8 @@
-package org.example.shopservicelayer.repositories;
+package org.example.shopservicelayer.repositories.jpaInterfaces;
 
 
 
 import org.example.shopservicelayer.dto.ProductDTO;
-import org.example.shopservicelayer.dto.SpecValue;
 import org.example.shopservicelayer.entity.Product;
 import org.example.shopservicelayer.entity.ProductSpecItem;
 import org.springframework.data.domain.Page;

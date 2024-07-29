@@ -6,9 +6,9 @@ import org.example.shopservicelayer.entity.ProductCategory;
 import org.example.shopservicelayer.entity.ProductSpecName;
 import org.example.shopservicelayer.entity.ProductSpecsValue;
 import org.example.shopservicelayer.entity.ProductType;
-import org.example.shopservicelayer.util.ClassId;
-import org.example.shopservicelayer.util.EntityGraphBuilder;
-import org.example.shopservicelayer.util.EntityVisitor;
+import org.example.shopservicelayer.util.categoryTreeUtil.ClassId;
+import org.example.shopservicelayer.util.categoryTreeUtil.EntityGraphBuilder;
+import org.example.shopservicelayer.util.categoryTreeUtil.EntityVisitor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

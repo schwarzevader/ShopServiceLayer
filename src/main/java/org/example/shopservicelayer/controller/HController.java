@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.example.shopservicelayer.dto.ProductDTO;
-import org.example.shopservicelayer.repositories.ProductCategoryRepo;
-import org.example.shopservicelayer.repositories.ProductSpecItemRepo;
+import org.example.shopservicelayer.repositories.jpaInterfaces.ProductCategoryRepo;
+import org.example.shopservicelayer.repositories.jpaInterfaces.ProductSpecItemRepo;
 import org.example.shopservicelayer.service.serviceImp.ProductServiceImp;
 import org.example.shopservicelayer.someRequest.ProductPaginationRequest;
 import org.example.shopservicelayer.someResponse.CustomResponse;

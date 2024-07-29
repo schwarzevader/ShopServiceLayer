@@ -1,7 +1,4 @@
-package org.example.shopservicelayer.util;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+package org.example.shopservicelayer.util.categoryTreeUtil;
 
 import java.util.HashMap;
 import java.util.List;

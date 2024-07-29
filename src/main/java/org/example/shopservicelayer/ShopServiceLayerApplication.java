@@ -1,8 +1,7 @@
 package org.example.shopservicelayer;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.shopservicelayer.entity.ProductType;
-import org.example.shopservicelayer.repositories.imp.CategoryRepositoryImp;
+import org.example.shopservicelayer.repositories.imp.CategoriesAndSpecsRepositoryImp;
 import org.example.shopservicelayer.repositories.imp.ProductRepositoryImp;
 import org.example.shopservicelayer.repositories.imp.ProductTypeRepoImp;
 import org.example.shopservicelayer.repositories.imp.SpecValueRepoImp;
@@ -10,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Collections;
-import java.util.List;
 
 @SpringBootApplication
 @Slf4j
@@ -26,7 +22,7 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
     ProductRepositoryImp productRepositoryImp;
 
     @Autowired
-    CategoryRepositoryImp categoryRepositoryImp;
+    CategoriesAndSpecsRepositoryImp categoryRepositoryImp;
 
     public static void main(String[] args) {
         SpringApplication.run(ShopServiceLayerApplication.class, args);

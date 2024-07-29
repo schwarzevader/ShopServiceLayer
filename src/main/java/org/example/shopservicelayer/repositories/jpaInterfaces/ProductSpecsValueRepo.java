@@ -1,4 +1,4 @@
-package org.example.shopservicelayer.repositories;
+package org.example.shopservicelayer.repositories.jpaInterfaces;
 
 
 

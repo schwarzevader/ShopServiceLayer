@@ -1,4 +1,4 @@
-package org.example.shopservicelayer.util;
+package org.example.shopservicelayer.util.categoryTreeUtil;
 
 public class ClassId<T> {
 

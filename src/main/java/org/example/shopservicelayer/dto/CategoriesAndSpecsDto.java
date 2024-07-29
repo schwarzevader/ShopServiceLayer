@@ -16,6 +16,10 @@ import java.util.*;
 //@Cacheable
 //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class CategoriesAndSpecsDto implements Serializable {
+
+
+
+
     private Long id;
     private String name;
     private List<Specs> specsList = new ArrayList<>();
@@ -55,7 +59,7 @@ public class CategoriesAndSpecsDto implements Serializable {
 
     @Override
     public String toString() {
-        return "---------------------------{" +
+        return "{" +
                 "id:" + id +
                 ", name:'" + name + '\'' +
                 ", specsList:" + specsList.toString() +

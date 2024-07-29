@@ -17,11 +17,11 @@ public class CategoryDTO implements Serializable {
     private String value;
 
 
-//    @Override
-//    public String toString() {
-//        return "CategoryDTO{" +
-//               "id=" + id +
-//               ", nameOfCategory='" + value + '\'' +
-//               '}';
-//    }
+    @Override
+    public String toString() {
+        return "{" +
+               "id:" + id +
+               ", nameOfCategory:'" + value + '\'' +
+               '}';
+    }
 }

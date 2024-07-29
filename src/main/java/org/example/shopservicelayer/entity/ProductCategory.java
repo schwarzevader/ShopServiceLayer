@@ -2,8 +2,8 @@ package org.example.shopservicelayer.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.shopservicelayer.util.EntityVisitor;
-import org.example.shopservicelayer.util.Identifiable;
+import org.example.shopservicelayer.util.categoryTreeUtil.EntityVisitor;
+import org.example.shopservicelayer.util.categoryTreeUtil.Identifiable;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.io.Serializable;

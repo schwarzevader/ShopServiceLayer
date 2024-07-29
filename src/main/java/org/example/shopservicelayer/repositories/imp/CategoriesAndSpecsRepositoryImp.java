@@ -10,61 +10,28 @@ import org.example.shopservicelayer.dto.CategoriesAndSpecsDto;
 import org.example.shopservicelayer.dto.SpecValue;
 import org.example.shopservicelayer.dto.Specs;
 import org.example.shopservicelayer.dtoTransformer.dtoTransormInterfaces.SpecsDtoTransformer;
-import org.example.shopservicelayer.entity.ProductCategory;
-import org.example.shopservicelayer.entity.ProductSpecName;
-import org.example.shopservicelayer.entity.ProductType;
-import org.example.shopservicelayer.util.EntityGraphBuilder;
-import org.example.shopservicelayer.util.ClassId;
-import org.example.shopservicelayer.util.EntityVisitor;
+import org.example.shopservicelayer.repositories.repositoriesInterfaces.CategoriesAndSpecsRepository;
 import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 
-import org.example.shopservicelayer.entity.ProductSpecsValue;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.StopWatch;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.*;
 
-@Service
+@Repository
 @Transactional
 //@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryRepositoryImp {
-
-
-
-
-    // Define the fields
-//    Field<Long> CATEGORY_ID = field("product_category_id", Long.class);
-//    Field<String> CATEGORY_NAME = field("name_of_category", String.class);
-//    Field<Long> SPEC_NAME_ID = field("product_spec_name_id", Long.class);
-//    Field<String> SPEC_NAME = field("spec_name", String.class);
-//    Field<Long> SPEC_VALUE_ID = field("product_spec_value_id", Long.class);
-//    Field<String> SPEC_VALUE = field("value", String.class);
-
-
-//    Field<Long> CATEGORY_ID = field("product_category_id", Long.class);
-//    Field<String> CATEGORY_NAME = field("name_of_category", String.class);
-//    Field<Long> SPEC_NAME_ID = field("product_spec_name_id", Long.class);
-//    Field<String> SPEC_NAME = field("spec_name", String.class);
-//    Field<Long> SPEC_VALUE_ID = field("product_spec_value_id", Long.class);
-//    Field<String> SPEC_VALUE = field("value", String.class);
-//    Field<Long> SPEC_NAME_CATEGORY_ID = field("product_category_id", Long.class);
-//    Field<Long> VALUE_SPEC_NAME_ID = field("product_spec_name_id", Long.class);
-
-
-
-
+public class CategoriesAndSpecsRepositoryImp implements CategoriesAndSpecsRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-
-
-    private int i = 0;
     StopWatch stopWatch = new StopWatch();
+
     private SpecsDtoTransformer specsDtoTransformer;
 
 //    @Autowired
@@ -91,7 +58,6 @@ public class CategoryRepositoryImp {
         Map<Long, Specs> specsMap = new HashMap<>();
         Map<Long, CategoriesAndSpecsDto> categoriesMap = new HashMap<>();
         Set<Specs> specsSet = new HashSet<>();
-
         this.entityManager.createQuery("select " +
                         "c.id,c.nameOfCategory," +
                         "sn.id,sn.name," +
@@ -100,17 +66,9 @@ public class CategoryRepositoryImp {
                         "join c.productSpecNames sn " +
                         "join sn.productSpecValues sv")
                 .unwrap(Query.class)
-
 //                .setMaxResults(1000)
                 .setHint(QueryHints.HINT_CACHEABLE, cacheable)
                 .setTupleTransformer((tuples, aliases) -> {
-//                    System.out.println("--------------------------------");
-//                    System.out.println("0===" + tuples[0]);
-//                    System.out.println("1===" + tuples[1]);
-//                    System.out.println("2===" + tuples[2]);
-//                    System.out.println("3===" + tuples[3]);
-//                    System.out.println("4===" + tuples[4]);
-//                    System.out.println("5===" + tuples[5]);
                     Long categoryId = (Long) tuples[0];
                     Long specId = (Long) tuples[2];
                     //////////////////////////////
@@ -122,7 +80,6 @@ public class CategoryRepositoryImp {
 //                            .getSpecsMap().putIfAbsent(spec.getId(),spec);
 
 /////////////////////////////////////////
-
 
                     Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
                     spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
@@ -136,9 +93,6 @@ public class CategoryRepositoryImp {
                     return null;
                 }).getResultList();
 
-
-///////////////////////////////
-
 //        categoriesMap.values().forEach(c->{
 //            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
 //        });
@@ -146,7 +100,6 @@ public class CategoryRepositoryImp {
         stopWatch.stop();
         System.out.println("time=" + stopWatch.getTotalTimeMillis());
 
-//        return categoriesMap.values().stream().toList();
         return new ArrayList<>(categoriesMap.values());
     }
 
@@ -189,7 +142,7 @@ public class CategoryRepositoryImp {
 
 
 
-    public List<ProductCategory> getCategories(boolean cacheable) {
+//    public List<ProductCategory> getCategories(boolean cacheable) {
 
 //    return
 //            ctx.select(
@@ -218,33 +171,11 @@ public class CategoryRepositoryImp {
 //            .from(PRODUCT_CATEGORY)
 //            .fetch(String.valueOf(Records.mapping(ProductCategory::new)));
 
-        return null;
-    }
+//        return null;
+//    }
 
 
-//
-//    @Autowired
-//    private ProductCategoryRepo crudCategory;
-//
-//    public void saveCategory(ProductCategory category){
-//        crudCategory.save(category);
-//    }
-//
-//    public void deleteCategory(Long id){
-//        crudCategory.deleteById(id);
-//    }
-//    @SuppressWarnings("unchecked")
-//    public List<String> paginationCategoryDTO(){
-//        return entityManager.createQuery
-//                        ("select c.nameOfCategory from ProductCategory c ")
-//                .getResultList();
-//    }
-//
-//
-//    public List<String> getCategoryNameByTypeCategory(String name){
-//        return crudCategory.getCategoriesNameByTypeCategory(name);
-//    }
-//
+
 
 
 }

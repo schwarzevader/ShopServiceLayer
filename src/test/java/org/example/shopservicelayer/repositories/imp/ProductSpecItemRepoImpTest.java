@@ -4,9 +4,8 @@ import com.github.dockerjava.api.model.ContainerConfig;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
-import org.example.shopservicelayer.ContainersConfig;
-import org.example.shopservicelayer.repositories.ProductRepository;
-import org.example.shopservicelayer.repositories.ProductSpecItemRepo;
+import org.example.shopservicelayer.repositories.jpaInterfaces.ProductRepository;
+import org.example.shopservicelayer.repositories.jpaInterfaces.ProductSpecItemRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
