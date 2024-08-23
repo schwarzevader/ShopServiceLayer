@@ -6,16 +6,17 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
-import org.example.shopservicelayer.dto.ProductAndSpecsDto;
-import org.example.shopservicelayer.dto.SpecValue;
-import org.example.shopservicelayer.dto.Specs;
+import org.example.shopservicelayer.dto.*;
 import org.example.shopservicelayer.entity.Product;
 import org.example.shopservicelayer.entity.ProductSpecsValue;
 import org.example.shopservicelayer.repositories.jpaInterfaces.ProductRepository;
+import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ import java.util.Map;
 //@NoArgsConstructor
 @AllArgsConstructor
 //@RequiredArgsConstructor
-public class ProductRepositoryImp  {
+public class ProductRepositoryImp {
 
 //    Tag misc = entityManager.unwrap( Session.class )
 //            .bySimpleNaturalId(Tag.class)
@@ -42,6 +43,8 @@ public class ProductRepositoryImp  {
 //
 //post.removeTag( misc );
 
+
+    StopWatch stopWatch = new StopWatch();
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -69,16 +72,92 @@ public class ProductRepositoryImp  {
 //            .getResultList();
 //
 
-    public Product getProduct(Long id){
 
-//       Product p= session.getReference(Product.class,id);
-//       session.getTransaction().commit();
-//       session.close();
-//       return p;
-//       return session.getReference(Product.class,id);
-//       return session.get(Product.class, id);
-//       return   entityManager.getReference(Product.class,id);
-//       return   entityManager.find(Product.class,id);
+    public ProductInfoDto getProductInfoDto(Long id) {
+//        "p.name," +
+//                                        "p.description," +
+//                                        "p.price," +
+//                                        "p.rating," +
+//                                        "psn.id," +
+//                                        "psn.name," +
+//                                        "psv.id, " +
+//                                        "psv.value " +
+//                                        "from products p " +
+//                                        "join  p.productSpecItemList psi " +
+//                                        "join psi.productSpecsValue psv " +
+//                                        "join psv.productSpecName psn " +
+
+        this.stopWatch.start();
+        Map<Long, Specs> specsMap = new HashMap<>();
+        Map<Long, ProductInfoDto> productInfoMap = new HashMap<>();
+        this.entityManager.createQuery("select " +
+                        "p.name," +
+                        "p.description," +
+                        "p.price," +
+                        "p.rating," +
+                        "psn.id," +
+                        "psn.name," +
+                        "psv.id, " +
+                        "psv.value " +
+                        "from productSpecItem psi " +
+                        "join  psi.product p " +
+                        "join psi.productSpecsValue psv " +
+                        "join psv.productSpecName psn " +
+                        "where p.id =:id"
+                ).setParameter("id", id)
+                .unwrap(Query.class)
+                .setTupleTransformer((tuples, aliases) -> {
+
+                    Long specId = (Long) tuples[4];
+
+
+
+
+
+/////////////////////////////////////////
+
+                    //    public ProductInfoDto(Long id, String name, String description, double price, double rating, List<Specs> specsList)
+
+                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[5]));
+                    spec.getProductSpecValues().add(new SpecValue((Long) tuples[6], (String) tuples[7], specId));
+
+//                    productInfoMap.computeIfAbsent(id, k -> new ProductInfoDto(
+//                            id,
+//                            (String) tuples[0],
+//                            (String) tuples[1],
+//                            (double) tuples[2],
+//                            (double) tuples[3]
+//                    )).getSpecsList().putIfAbsent(spec.getId(),spec);
+
+                    ProductInfoDto productInfoDto =
+                            productInfoMap.computeIfAbsent(id, k -> new ProductInfoDto(
+                                    id,
+                                    (String) tuples[0],
+                                    (String) tuples[1],
+                                    (double) tuples[2],
+                                    (double) tuples[3]
+                            ));
+                    if (!productInfoDto.getSpecsList().contains(spec)) {
+                        productInfoDto.getSpecsList().add(spec);
+                    }
+
+                    /////////////////////////////////////
+                    return null;
+                }).getResultList();
+
+//        categoriesMap.values().forEach(c->{
+//            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
+//        });
+
+
+        this.stopWatch.stop();
+        System.out.println("time=" + stopWatch.getTotalTimeMillis());
+//        return new ArrayList<>(categoriesMap.values());
+        return productInfoMap.get(id);
+    }
+
+    public Product getProduct(Long id) {
+
 
         return entityManager.createQuery(
                         "SELECT p " +
@@ -92,21 +171,13 @@ public class ProductRepositoryImp  {
                 .getSingleResult();
     }
 
-    public ProductAndSpecsDto getProductAndSpecs(Long id){
+    public ProductAndSpecsDto getProductAndSpecs(Long id) {
 
-//        private Long id;
-//        private String name ;
-//        private double shadowRating;
-//        private double price;
-//        private String description;
-//        private int quantity ;
-//        private Long categoryID;
-//        private List<Specs> specsList;
 
-        Map<Long,Specs> specsMap =new HashMap<>();
+        Map<Long, Specs> specsMap = new HashMap<>();
         ProductAndSpecsDto productAndSpecsDto = new ProductAndSpecsDto();
 //        return (ProductAndSpecsDto)
-                entityManager.createQuery("""
+        entityManager.createQuery("""
                         select  p.id,
                         p.name,
                         p.shadowRating,
@@ -130,12 +201,12 @@ public class ProductRepositoryImp  {
                     specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[10]))
                             .getProductSpecValues().add(new SpecValue((Long) tuples[7], (String) tuples[8], specId));
                     productAndSpecsDto.setId((Long) tuples[0]);
-                    productAndSpecsDto.setName( (String) tuples[1]);
-                    productAndSpecsDto.setShadowRating((double)tuples[2]);
-                    productAndSpecsDto.setPrice( (double)tuples[3]);
+                    productAndSpecsDto.setName((String) tuples[1]);
+                    productAndSpecsDto.setShadowRating((double) tuples[2]);
+                    productAndSpecsDto.setPrice((double) tuples[3]);
                     productAndSpecsDto.setDescription((String) tuples[4]);
-                    productAndSpecsDto.setQuantity((int)tuples[5]);
-                    productAndSpecsDto.setCategoryID((Long)tuples[6]);
+                    productAndSpecsDto.setQuantity((int) tuples[5]);
+                    productAndSpecsDto.setCategoryID((Long) tuples[6]);
 //                    productAndSpecsDto.setSpecsList(specsMap.values().stream().toList());
 //                    return new ProductAndSpecsDto(
 //                            (Long) tuples[0],
@@ -151,15 +222,15 @@ public class ProductRepositoryImp  {
                     return null;
                 }).getSingleResult();
         productAndSpecsDto.setSpecsList(specsMap.values().stream().toList());
-        return  productAndSpecsDto;
+        return productAndSpecsDto;
     }
-
 
 
     @Autowired
     //@NonNull
     private ProductRepository productRepository;
-//
+
+    //
 //    @Autowired
 //    private CrudProductRepository crudProductRepository;
 //
@@ -167,29 +238,29 @@ public class ProductRepositoryImp  {
 //        this.productRepository = productRepository;
 //    }
 //
-    public void saveProduct(Product product){
+    public void saveProduct(Product product) {
 //        productRepository.save(product);
         try {
             entityManager.getTransaction().begin();
             entityManager.persist(product);
             entityManager.getTransaction().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             entityManager.getTransaction().rollback();
         }
 
     }
 
-    public void updateProduct(Long id, Product product , List<ProductSpecsValue> removeSpecValue, List<ProductSpecsValue>addSpecValue){
+    public void updateProduct(Long id, Product product, List<ProductSpecsValue> removeSpecValue, List<ProductSpecsValue> addSpecValue) {
 //        productRepository.save(product);
 
         productRepository.findProductById(product.getId());
         try {
             entityManager.getTransaction().begin();
 //            Product prod =  entityManager.find(Product.class, id);
-            Product prod =  entityManager.createQuery("select p " +
-                                                               "from products p " +
-                                                               "join  fetch p.productSpecItemList iti" +
-                                                               " where p.id = :id ",Product.class).setParameter("id",id).getSingleResult();
+            Product prod = entityManager.createQuery("select p " +
+                    "from products p " +
+                    "join  fetch p.productSpecItemList iti" +
+                    " where p.id = :id ", Product.class).setParameter("id", id).getSingleResult();
 //            Product prod =  new Product();
             prod.setId(id);
             prod.setName(product.getName());
@@ -252,12 +323,10 @@ public class ProductRepositoryImp  {
 //            newSpecItems.forEach(prod::addProductSpecItem);
 
 
-
-
 //            prod.setProductSpecItemList(newSpecItems);
             entityManager.merge(prod);
             entityManager.getTransaction().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             entityManager.getTransaction().rollback();
         }
     }
@@ -271,11 +340,7 @@ public class ProductRepositoryImp  {
 //    }
 
 
-
-
-
-
-//
+    //
 //    public void saveCategory(ProductCategory category){
 //        entityManager.persist(category);
 //    }
@@ -288,9 +353,9 @@ public class ProductRepositoryImp  {
 //        return productRepository.findProductByName(name);
 //    }
 //
-    public Product findById(Long id){
+    public Product findById(Long id) {
 //      return productRepository.findProductByIdIs(id);
-      return entityManager.find(Product.class,id);
+        return entityManager.find(Product.class, id);
     }
 //
 //
@@ -377,7 +442,6 @@ public class ProductRepositoryImp  {
 //        return productRepository.existsProductById(id);
 //    }
 //
-
 
 
 }

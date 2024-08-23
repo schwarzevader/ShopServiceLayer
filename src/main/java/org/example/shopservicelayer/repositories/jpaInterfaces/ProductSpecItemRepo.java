@@ -20,27 +20,9 @@ import java.util.Optional;
 public interface ProductSpecItemRepo extends JpaRepository<ProductSpecItem, Long> {
 
 //    List<ProductProjection> findByProductSpecsValueIsIn(List <Long> valuesList, Pageable pageable);
-
-
-////     Long getId();//
-//    String getName();
-//    String getDescription();
-//    double getPrice();
-//    double getRating();
-//    double getShadowRating();
-
-//    private Long id;
-//    private String name;
-//    private String description;
-//    private double price;
-//    private double rating;
-//    private double shadowRating;
-
 //    List<ProductProjection.SpecsItemsDTOInterface> getSpecItemList();
-//
+
 ////    @EntityGraph(attributePaths = "products")
-//
-//
 //        List<ProductProjection> findProductSpecItemByProductSpecsValueIDs(List <Long> valuesList, Pageable pageable);
 
 //    @EntityGraph(attributePaths = "products")
@@ -240,7 +222,7 @@ Page<ProductDTO> getProductDTOBySpecValueIDSd(@Param("values") List<Long> values
 //    Page<ProductDTO> getProductDTOBySearchString(@Param("value") String value, Pageable pageable);
 
 
-//    %?1%"
+
 
     ////////////////////
 //    @Query(value = """

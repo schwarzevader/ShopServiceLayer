@@ -60,6 +60,13 @@ public class SpecValue implements Serializable {
 
     }
 
+    public SpecValue(boolean checked, Long id, String specValue,  Long specNameId) {
+        this.specValue = specValue;
+        this.checked = checked;
+        this.specNameId = specNameId;
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "{" +

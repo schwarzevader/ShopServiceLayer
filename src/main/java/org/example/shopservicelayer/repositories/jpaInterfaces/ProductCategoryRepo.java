@@ -46,7 +46,7 @@ public interface ProductCategoryRepo extends JpaRepository<ProductCategory, Long
                  )
             from  product_category pC
             join pC.categoryItems  p
-            where pC.id  =:categoryId
+            where pC.id  =:categoryId 
              """)
     Page<ProductDTO> getProducts(@Param("categoryId") Long CategoryId, Pageable pageable);
 
@@ -59,9 +59,5 @@ public interface ProductCategoryRepo extends JpaRepository<ProductCategory, Long
             """)
     List<CategoryDTO> getAllCategoryDTO();
 
-//    @Query(value = "select c.nameOfCategory from ProductCategory c join c.typeCategory t where t.nameOfTypeCategory like:name")
-//    public List<String> getCategoriesNameByTypeCategory(@Param("name") String typeCategory);
-//
-//    @Query(value = "select c.nameOfCategory from ProductCategory c ")
-//    public List<String> getCategoriesName(@Param("name") String typeCategory);
+
 }

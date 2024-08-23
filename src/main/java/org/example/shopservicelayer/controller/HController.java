@@ -41,6 +41,49 @@ public class HController {
     @Autowired
     private ProductCategoryRepo productCategoryRepo;
 
+    private Sort sortBy (String sortBy){
+        log.info("sortBy-----------------------"+sortBy);
+
+        switch (sortBy) {
+            case "price : low to high" -> {
+                System.out.println("asc---------------------------------------------");
+//                    return Sort.by("price").ascending();
+                return Sort.by(Sort.Order.asc("price"));
+            }
+            case "price : high to low" -> {
+                return Sort.by("price").descending();
+            }
+            case "rating"->{
+                return Sort.by("p.rating").descending();
+
+            }
+            default -> {
+                log.info("sort by shadowRating---------------------------");
+                return Sort.by("p.shadowRating").descending();
+            }
+        }
+//        if (sortBy.getSortingBy().equals("price : low to high")) {
+//            switch (sortBy.getAscOrDesc()) {
+//                case "asc" -> {
+//                    System.out.println("asc---------------------------------------------");
+////                    return Sort.by("price").ascending();
+//                    return Sort.by(Sort.Order.asc("price"));
+//                }
+//                case "desc" -> {
+//                    return Sort.by("price").descending();
+//                }
+//            }
+//        }else if (sortBy.getSortingBy().equals("rating")){
+//            return Sort.by("rating").descending();
+//        }
+//        System.out.println("sort by id---------------------------");
+//        return Sort.by("p.shadowRating").descending();
+//        return Sort.by(Sort.Order.asc("p.id"));
+//        return  Sort.by(Sort.Direction.ASC,"p.id");
+    }
+
+
+
 //    @RequestMapping(value = "/")
 //    public String hello(){
 //
@@ -188,10 +231,15 @@ public class HController {
     public ResponseEntity<ProductPaginationResponse> getProductsByCategoryID(@RequestBody ProductPaginationRequest request
             ,@PathVariable(value = "id") Long id){
         System.out.println("request by category  id ------"+id);
+        int selectedPage=request.getSelectedPage();
+        int pageSize=request.getPageSize();
+        log.info("selectedPage = "+selectedPage);
+        log.info("pageSize = "+pageSize);
+
         Page<ProductDTO> page =  productCategoryRepo.getProducts(id
                 ,PageRequest.of(request.getSelectedPage()
                         ,request.getPageSize()
-                        ,sortBy(request.getSortBy())));
+                        ,this.sortBy(request.getSortBy())));
         System.out.println("TOTAL ELEMENTS ="+page.getTotalElements()+"----in CATEGORY==="+id);
         page.forEach(System.out::println);
 //        Page<ProductDTO> page =  productSpecItemRepo.getProductDTOBySpecValueIDS(request.getSpecsValueId()
@@ -202,46 +250,7 @@ public class HController {
 
 
 
-    private Sort sortBy (String sortBy){
-        log.info("sortBy-----------------------");
 
-        switch (sortBy) {
-            case "price : low to high" -> {
-                System.out.println("asc---------------------------------------------");
-//                    return Sort.by("price").ascending();
-                return Sort.by(Sort.Order.asc("price"));
-            }
-            case "price : high to low" -> {
-                return Sort.by("price").descending();
-            }
-            case "rating"->{
-                return Sort.by("p.rating").descending();
-
-            }
-            default -> {
-                System.out.println("sort by id---------------------------");
-                return Sort.by("p.shadowRating").descending();
-            }
-        }
-//        if (sortBy.getSortingBy().equals("price : low to high")) {
-//            switch (sortBy.getAscOrDesc()) {
-//                case "asc" -> {
-//                    System.out.println("asc---------------------------------------------");
-////                    return Sort.by("price").ascending();
-//                    return Sort.by(Sort.Order.asc("price"));
-//                }
-//                case "desc" -> {
-//                    return Sort.by("price").descending();
-//                }
-//            }
-//        }else if (sortBy.getSortingBy().equals("rating")){
-//            return Sort.by("rating").descending();
-//        }
-//        System.out.println("sort by id---------------------------");
-//        return Sort.by("p.shadowRating").descending();
-//        return Sort.by(Sort.Order.asc("p.id"));
-//        return  Sort.by(Sort.Direction.ASC,"p.id");
-    }
 
 
 }

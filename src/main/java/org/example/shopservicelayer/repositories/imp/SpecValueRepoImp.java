@@ -148,8 +148,16 @@ public class SpecValueRepoImp {
 
 
                     Long specId = (Long) tuples[2];
-                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
-                            .getProductSpecValues().add(new SpecValue((Long) tuples[0], (String) tuples[1], specId));
+                    Long valueId=(Long) tuples[0];
+                    if (id.contains(valueId)){
+                        specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+                                .getProductSpecValues().add(new SpecValue(true,valueId, (String) tuples[1], specId));
+                    }else {
+                        specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+                                .getProductSpecValues().add(new SpecValue(valueId, (String) tuples[1], specId));
+                    }
+//                    specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]))
+//                            .getProductSpecValues().add(new SpecValue(valueId, (String) tuples[1], specId));
                     return null;
                 }).getResultList();
 

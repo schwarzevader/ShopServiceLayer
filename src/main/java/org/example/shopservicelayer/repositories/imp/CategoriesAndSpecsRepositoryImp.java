@@ -57,11 +57,13 @@ public class CategoriesAndSpecsRepositoryImp implements CategoriesAndSpecsReposi
         stopWatch.start();
         Map<Long, Specs> specsMap = new HashMap<>();
         Map<Long, CategoriesAndSpecsDto> categoriesMap = new HashMap<>();
-        Set<Specs> specsSet = new HashSet<>();
         this.entityManager.createQuery("select " +
-                        "c.id,c.nameOfCategory," +
-                        "sn.id,sn.name," +
-                        "sv.id,sv.value " +
+                        "c.id," +
+                        "c.nameOfCategory," +
+                        "sn.id," +
+                        "sn.name," +
+                        "sv.id," +
+                        "sv.value " +
                         "from product_category c " +
                         "join c.productSpecNames sn " +
                         "join sn.productSpecValues sv")
@@ -71,15 +73,6 @@ public class CategoriesAndSpecsRepositoryImp implements CategoriesAndSpecsReposi
                 .setTupleTransformer((tuples, aliases) -> {
                     Long categoryId = (Long) tuples[0];
                     Long specId = (Long) tuples[2];
-                    //////////////////////////////
-
-//                    Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
-//                    spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
-//                    categoriesMap.computeIfAbsent(categoryId,k->
-//                                    new CategoriesAndSpecsDto(categoryId,(String) tuples[1]))
-//                            .getSpecsMap().putIfAbsent(spec.getId(),spec);
-
-/////////////////////////////////////////
 
                     Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[3]));
                     spec.getProductSpecValues().add(new SpecValue((Long) tuples[4], (String) tuples[5], specId));
@@ -88,8 +81,11 @@ public class CategoriesAndSpecsRepositoryImp implements CategoriesAndSpecsReposi
                     if (!category.getSpecsList().contains(spec)) {
                         category.getSpecsList().add(spec);
                     }
-
                     /////////////////////////////////////
+
+                    //                    categoriesMap.computeIfAbsent(categoryId,k->
+//                                    new CategoriesAndSpecsDto(categoryId,(String) tuples[1]))
+//                            .getSpecsMap().putIfAbsent(spec.getId(),spec);
                     return null;
                 }).getResultList();
 

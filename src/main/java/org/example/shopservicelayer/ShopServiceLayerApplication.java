@@ -21,6 +21,7 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
     @Autowired
     ProductRepositoryImp productRepositoryImp;
 
+
     @Autowired
     CategoriesAndSpecsRepositoryImp categoryRepositoryImp;
 
@@ -81,7 +82,10 @@ public class ShopServiceLayerApplication implements CommandLineRunner {
 //        categoryRepositoryImp.getAllCategories(true);
 //        categoryRepositoryImp.getAllCategories();
 //        categoryRepositoryImp.getAllCategories();
-        System.out.println( productTypeRepoImp.getProductType(1000L).toString());;
+//        System.out.println( productTypeRepoImp.getProductType(1000L).toString());;
+
+        log.info(productRepositoryImp.getProductInfoDto(1000L).toString());
+//        System.out.println(productRepositoryImp.getProductInfoDto(1000L).toString());
 
     }
 }

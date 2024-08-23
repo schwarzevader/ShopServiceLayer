@@ -48,13 +48,13 @@ public class ProductDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductDTO{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", description='" + description + '\'' +
-               ", price=" + price +
-               ", rating=" + rating +
-               ", shadowRating=" + shadowRating +
+        return "{" +
+               "id:" + id +
+               ", name:'" + name + '\'' +
+               ", description:'" + description + '\'' +
+               ", price:" + price +
+               ", rating:" + rating +
+               ", shadowRating:" + shadowRating +
                '}';
     }
 

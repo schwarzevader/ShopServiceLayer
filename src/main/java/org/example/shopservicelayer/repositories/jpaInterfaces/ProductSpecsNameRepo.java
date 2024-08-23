@@ -14,25 +14,6 @@ import java.util.List;
 
 public interface ProductSpecsNameRepo extends JpaRepository<ProductSpecName, Long>  {
 
-
-
-
-//    select psn1_0.product_spec_name_id,
-//    psn1_0.spec_name,
-//    psn1_0.product_category_id,
-//    psv1_0.product_spec_name_id,
-//    psv1_0.product_spec_value_id,
-//    psv1_0.value
-//    from product_spec_names psn1_0
-//    left join product_categories pc1_0 on pc1_0.product_category_id=psn1_0.product_category_id
-//    left join product_spec_value psv1_0 on psn1_0.product_spec_name_id=psv1_0.product_spec_name_id
-//    where pc1_0.product_category_id=?
-
-
-
-
-
-
 //////////////////////////////
 
 //    @EntityGraph(attributePaths = "productSpecValues")
@@ -58,18 +39,4 @@ public interface ProductSpecsNameRepo extends JpaRepository<ProductSpecName, Lon
     List<SpecsProjection> findByProductCategoryId(Long categoryId, Pageable page1);
 
 
-
-////////////////////////////////////////////////////////////
-
-//    @Query("select pSN.id  ," +
-//           " pSN.name ," +
-//           " pSN.productSpecValues " +
-//           "from product_spec_name pSN " +
-//
-//           "join pSN.productSpecValues v " +
-//           "join v.value " +
-//           "join v.id " +
-//           "join pSN.productCategory pC " +
-//           "where pC.id = :categoryId")
-//    List<SpecsProjection> findByProductCategoryId(@Param("categoryId") Long categoryId);
 }
