@@ -4,6 +4,8 @@ package org.example.shopservicelayer.controller;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.example.shopservicelayer.dto.SaveOrUpdateProduct;
+import org.example.shopservicelayer.repositories.imp.ProductRepositoryImp;
 import org.example.shopservicelayer.service.serviceImp.ProductServiceImp;
 import org.example.shopservicelayer.someResponse.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     @Autowired
+    private ProductRepositoryImp productRepositoryImp;
+    @Autowired
     private ProductServiceImp productServiceImp;
+
 
     @GetMapping("/info/{id}")
     public ResponseEntity <CustomResponse> getProductInfo(@PathVariable(value = "id") Long id){
       log.info("---------------getProductInfo for id = "+id);
 
         return new ResponseEntity<>(new CustomResponse(productServiceImp.getProductSpecsById(id)), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/product_info/{id}")
+    public ResponseEntity <SaveOrUpdateProduct> getProductInfoDto(@PathVariable(value = "id") Long id){
+        log.info("--------getProductInfo for id = "+id);
+        SaveOrUpdateProduct saveOrUpdateProduct=  productRepositoryImp.getProductInfoDto(id);
+        log.info(saveOrUpdateProduct.toString());
+        log.info("--------");
+
+        return new ResponseEntity<>(saveOrUpdateProduct, HttpStatus.OK);
     }
 
 //    @Autowired

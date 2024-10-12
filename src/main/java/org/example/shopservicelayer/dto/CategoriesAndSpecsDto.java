@@ -23,7 +23,6 @@ public class CategoriesAndSpecsDto implements Serializable {
     private Long id;
     private String name;
     private List<Specs> specsList = new ArrayList<>();
-
 //    private Map<Long,Specs> specsMap = new HashMap<>();
 
 //    public CategoriesAndSpecsDto(Long id, String name, Specs specs) {

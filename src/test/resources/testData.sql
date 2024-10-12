@@ -15,7 +15,7 @@ CREATE TABLE if not exists product_categories
     product_type_id     bigint,
     sort_value          bigint,
     CONSTRAINT product_categories_pkey PRIMARY KEY (product_category_id),
-    CONSTRAINT product_categories_name_of_category_key UNIQUE (name_of_category),
+#     CONSTRAINT product_categories_name_of_category_key UNIQUE (name_of_category),
     CONSTRAINT fk_product_categories_product_type FOREIGN KEY (product_type_id)
         REFERENCES product_type (product_type_id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -1126,7 +1126,7 @@ VALUES (1000, 1000, 1008),
        (1178, 1013, 1072),
        (1179, 1013, 1089),
        (1180, 1013, 1057),
-       (1181, 1013, 1077),
+
 #MacBook air apple 16 99wt more than fullHD  m cpu M1 graphics silver m1 14 Apple M M1 max 512
        (1182, 1014, 1074),
        (1183, 1014, 1015),
@@ -1140,7 +1140,7 @@ VALUES (1000, 1000, 1008),
        (1191, 1014, 1072),
        (1192, 1014, 1003),
        (1193, 1014, 1057),
-       (1194, 1014, 1077),
+
 #MacBook air apple 62 50wt more than fullHD  m cpu M1 graphics white m1 15.6 Apple M m1 pro 512
        (1195, 1015, 1011),
        (1196, 1015, 1015),
@@ -1154,7 +1154,7 @@ VALUES (1000, 1000, 1008),
        (1204, 1015, 1072),
        (1205, 1015, 1003),
        (1206, 1015, 1058),
-       (1207, 1015, 1077),
+
 #MacBook air apple 18 50wt more than fullHD  m cpu M1 graphics white m1 16.1 Apple M m1 pro 1TB
        (1208, 1016, 1074),
        (1209, 1016, 1015),
@@ -1462,7 +1462,7 @@ VALUES (1000, 1000, 1008),
        (1490, 1037, 1072),
        (1491, 1037, 1087),
        (1492, 1037, 1058),
-       (1493, 1037, 1077),
+
 #MacBook air apple 36 50wt more than fullHD  m cpu M3 graphics black m3 16.1 Apple M M3  1TB
        (1494, 1038, 1074),
        (1495, 1038, 1015),
@@ -1476,7 +1476,7 @@ VALUES (1000, 1000, 1008),
        (1503, 1038, 1072),
        (1504, 1038, 1087),
        (1505, 1038, 1057),
-       (1506, 1038, 1077),
+
 #MacBook air apple 62 50wt more than fullHD  m cpu M3 graphics silver m3 15.6 Apple M M3  512
        (1507, 1039, 1001),
        (1508, 1039, 1015),
@@ -1518,7 +1518,7 @@ VALUES (1000, 1000, 1008),
        (1542, 1041, 1072),
        (1543, 1041, 1087),
        (1544, 1041, 1058),
-       (1545, 1041, 1077),
+
 #MacBook air apple 36 50wt more than fullHD  m cpu M3 graphics black m3 14 Apple M M3  1TB
        (1546, 1042, 1011),
        (1547, 1042, 1018),

@@ -1,6 +1,5 @@
 package org.example.shopservicelayer.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
-public class ProductInfoDto implements Serializable {
+public class SaveOrUpdateProduct implements Serializable {
     private Long id;
     private String name;
     private String description;
@@ -19,7 +18,7 @@ public class ProductInfoDto implements Serializable {
     private double rating;
     private List<Specs> specsList = new ArrayList<>();
 
-    public ProductInfoDto(Long id, String name, String description, double price, double rating, List<Specs> specsList) {
+    public SaveOrUpdateProduct(Long id, String name, String description, double price, double rating, List<Specs> specsList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -28,7 +27,7 @@ public class ProductInfoDto implements Serializable {
         this.specsList = specsList;
     }
 
-    public ProductInfoDto(Long id, String name, String description, double price, double rating) {
+    public SaveOrUpdateProduct(Long id, String name, String description, double price, double rating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -40,7 +39,7 @@ public class ProductInfoDto implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductInfoDto that = (ProductInfoDto) o;
+        SaveOrUpdateProduct that = (SaveOrUpdateProduct) o;
         return Objects.equals(id, that.id);
     }
 

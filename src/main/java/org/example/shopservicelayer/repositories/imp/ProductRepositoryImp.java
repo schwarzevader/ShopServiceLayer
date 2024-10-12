@@ -8,17 +8,12 @@ import lombok.AllArgsConstructor;
 
 import org.example.shopservicelayer.dto.*;
 import org.example.shopservicelayer.entity.Product;
-import org.example.shopservicelayer.entity.ProductSpecsValue;
 import org.example.shopservicelayer.repositories.jpaInterfaces.ProductRepository;
-import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StopWatch;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -44,7 +39,7 @@ public class ProductRepositoryImp {
 //post.removeTag( misc );
 
 
-    StopWatch stopWatch = new StopWatch();
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -73,7 +68,7 @@ public class ProductRepositoryImp {
 //
 
 
-    public ProductInfoDto getProductInfoDto(Long id) {
+    public SaveOrUpdateProduct getProductInfoDto(Long id) {
 //        "p.name," +
 //                                        "p.description," +
 //                                        "p.price," +
@@ -87,9 +82,9 @@ public class ProductRepositoryImp {
 //                                        "join psi.productSpecsValue psv " +
 //                                        "join psv.productSpecName psn " +
 
-        this.stopWatch.start();
+
         Map<Long, Specs> specsMap = new HashMap<>();
-        Map<Long, ProductInfoDto> productInfoMap = new HashMap<>();
+        Map<Long, SaveOrUpdateProduct> productInfoMap = new HashMap<>();
         this.entityManager.createQuery("select " +
                         "p.name," +
                         "p.description," +
@@ -109,15 +104,6 @@ public class ProductRepositoryImp {
                 .setTupleTransformer((tuples, aliases) -> {
 
                     Long specId = (Long) tuples[4];
-
-
-
-
-
-/////////////////////////////////////////
-
-                    //    public ProductInfoDto(Long id, String name, String description, double price, double rating, List<Specs> specsList)
-
                     Specs spec = specsMap.computeIfAbsent(specId, k -> new Specs(specId, (String) tuples[5]));
                     spec.getProductSpecValues().add(new SpecValue((Long) tuples[6], (String) tuples[7], specId));
 
@@ -127,10 +113,10 @@ public class ProductRepositoryImp {
 //                            (String) tuples[1],
 //                            (double) tuples[2],
 //                            (double) tuples[3]
-//                    )).getSpecsList().putIfAbsent(spec.getId(),spec);
+//                    )).getSpecMap.putIfAbsent(spec.getId(),spec);
 
-                    ProductInfoDto productInfoDto =
-                            productInfoMap.computeIfAbsent(id, k -> new ProductInfoDto(
+                    SaveOrUpdateProduct productInfoDto =
+                            productInfoMap.computeIfAbsent(id, k -> new SaveOrUpdateProduct(
                                     id,
                                     (String) tuples[0],
                                     (String) tuples[1],
@@ -149,10 +135,6 @@ public class ProductRepositoryImp {
 //            c.setSpecsList(new ArrayList<>(c.getSpecsMap().values()));
 //        });
 
-
-        this.stopWatch.stop();
-        System.out.println("time=" + stopWatch.getTotalTimeMillis());
-//        return new ArrayList<>(categoriesMap.values());
         return productInfoMap.get(id);
     }
 
@@ -250,86 +232,7 @@ public class ProductRepositoryImp {
 
     }
 
-    public void updateProduct(Long id, Product product, List<ProductSpecsValue> removeSpecValue, List<ProductSpecsValue> addSpecValue) {
-//        productRepository.save(product);
 
-        productRepository.findProductById(product.getId());
-        try {
-            entityManager.getTransaction().begin();
-//            Product prod =  entityManager.find(Product.class, id);
-            Product prod = entityManager.createQuery("select p " +
-                    "from products p " +
-                    "join  fetch p.productSpecItemList iti" +
-                    " where p.id = :id ", Product.class).setParameter("id", id).getSingleResult();
-//            Product prod =  new Product();
-            prod.setId(id);
-            prod.setName(product.getName());
-            prod.setDescription(product.getDescription());
-            prod.setShadowRating(product.getShadowRating());
-            prod.setRating(product.getRating());
-            prod.setPrice(product.getPrice());
-            prod.setQuantity(product.getQuantity());
-            prod.setProductCategory(product.getProductCategory());
-            removeSpecValue.forEach(prod::removeSpecValue);
-            addSpecValue.forEach(prod::addProductSpecsValue);
-
-/////////////////////////////////////////////////////////////////////
-//            List<PostComment> removedComments = new ArrayList<>(
-//                    post.getComments()
-//            );
-//            removedComments.removeAll(comments);
-//
-//            for(PostComment removedComment : removedComments) {
-//                post.removeComment(removedComment);
-//            }
-//
-//            List<PostComment> newComments = new ArrayList<>(comments);
-//            newComments.removeAll(post.getComments());
-//
-//            comments.removeAll(newComments);
-//
-//            for(PostComment existingComment : comments) {
-//                existingComment.setPost(post);
-//
-//                PostComment mergedComment = entityManager
-//                        .merge(existingComment);
-//
-//                post.getComments().set(
-//                        post.getComments().indexOf(mergedComment),
-//                        mergedComment
-//                );
-//            }
-//
-//            for(PostComment newComment : newComments) {
-//                post.addComment(newComment);
-//            }
-// /////////////////////////////////////////////////////////////////
-
-//            List<ProductSpecItem> removedSpecItems = new ArrayList<>(prod.getProductSpecItemList());
-//            removedSpecItems.removeAll(product.getProductSpecItemList());
-//            removedSpecItems.stream().forEach(prod::removeProductSpecItem);
-//            List<ProductSpecItem> newSpecItems = new ArrayList<>(product.getProductSpecItemList());
-//            newSpecItems.removeAll(prod.getProductSpecItemList());
-//            product.getProductSpecItemList().removeAll(newSpecItems);
-//            product.getProductSpecItemList().stream().forEach(existing->{
-//                existing.setProduct(prod);
-//                ProductSpecItem mergeProductSpecItem= entityManager.merge(existing);
-//                prod.getProductSpecItemList().set(
-//                        prod.getProductSpecItemList().indexOf(mergeProductSpecItem)
-//                        ,mergeProductSpecItem
-//                );
-//            });
-//
-//            newSpecItems.forEach(prod::addProductSpecItem);
-
-
-//            prod.setProductSpecItemList(newSpecItems);
-            entityManager.merge(prod);
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-        }
-    }
 
 
 //
